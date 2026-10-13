@@ -4,6 +4,8 @@
 
 Aplicação responsiva React/Vinext em Cloudflare Workers, publicada privadamente pelo Sites. Banco relacional D1 (SQLite) e arquivos privados R2. Uma empresa por publicação, sem alegar isolamento multiempresa. Tutores e pets têm identificadores UUID e são as únicas fontes de cadastro. APIs validam identidade, permissões e dados no servidor; não há dados demonstrativos na produção.
 
+As migrações da hospedagem criam tabelas e índices. O transporte de migrações do Sites não aceita corpos de gatilhos com múltiplos ponto-e-vírgulas; os gatilhos são instalados, um por declaração preparada, na primeira configuração autorizada, na mesma transação que cria a empresa. Uma falha impede a configuração inteira. As tabelas não são criadas nem alteradas durante requisições. Na restauração, os gatilhos são reinstalados após importar o snapshot para não repetir movimentos.
+
 ## Modelo e relacionamentos
 
 Empresa → configurações globais, serviços, temporadas, usuários e marca.
