@@ -15,7 +15,7 @@ Node 22.13+; instalação pelo script `install:ci`. Comandos:
 ```text
 npm run dev
 npm run build
-node --test tests/integration.test.mjs tests/security.test.mjs
+node --test tests/integration.test.mjs tests/security.test.mjs tests/client-api.test.mjs
 node scripts/runtime-smoke.mjs
 ```
 
@@ -29,7 +29,7 @@ No Windows desta sessão, o npm foi invocado por seu entrypoint JavaScript ofici
 
 O `.env` original está no diretório pai e não é copiado, lido pelo cliente ou enviado ao repositório da plataforma. Arquivos `.env*`, estado local, dependências e dados QA são ignorados. `BACKUP_SERVICE_HASH` é um segredo de runtime gerenciado pelo Sites. Não salvar tokens em `hosting.json`, documentos, código, URLs ou logs.
 
-Manifesto de hospedagem: `.openai/hosting.json`. Projeto: `appgprj_6ace87617b9c8191b9c4f0b34c4fed38`. Banco e bucket são provisionados pelo Sites. Os detalhes confirmados da publicação são registrados em `docs/PUBLICACAO.md` após a implantação.
+Manifesto de hospedagem: `.openai/hosting.json`. Projeto: `appgprj_6ace87617b9c8191b9c4f0b34c4fed38`. Banco e bucket são provisionados pelo Sites. Os detalhes confirmados da publicação são registrados em `outputs/PUBLICACAO.md` após a implantação; esse relatório local é ignorado pelo Git.
 
 ## Backup e recuperação
 

@@ -1,6 +1,6 @@
 # Verificação e limites desta entrega
 
-Quinze testes de integração foram aprovados com o mesmo esquema SQL e as mesmas funções de API usadas pela aplicação. Cobrem cadastro central, nomes repetidos, reflexo de alterações, duplicidade de telefone, pacote 4→3, adicionais, comissão proporcional, cancelamento e falta sem consumo, repetição de requisições, capacidade, conflitos, duração, duas políticas de temporada, compra/venda/lote e rollback, pagamentos parciais/estornos, saúde e admissão, autorização, senha adicional/tentativas/revogação, marca/contraste, relatórios, restauração validada, autenticação do backup automático e arquivos privados.
+Dezessete testes foram aprovados. As integrações usam o mesmo esquema SQL e as mesmas funções de API da aplicação. Cobrem cadastro central, nomes repetidos, reflexo de alterações, duplicidade de telefone, pacote 4→3, adicionais, comissão proporcional, cancelamento e falta sem consumo, repetição de requisições, capacidade, conflitos, duração, duas políticas de temporada, compra/venda/lote e rollback, pagamentos parciais/estornos, saúde e admissão, autorização, senha adicional/tentativas/revogação, marca/contraste, relatórios, restauração validada, autenticação do backup automático e arquivos privados. Também cobrem perda da resposta após gravação e cliques simultâneos no cliente; uploads repetidos conservam um único arquivo e registro.
 
 Build e TypeScript aprovados. As migrações foram aplicadas também no D1 local, pelo runtime Cloudflare. Teste HTTP da página e sessão: HTTP 200. O teste de fluxo local confirma o consumo de pacote em D1. Dados de teste e sessões locais são ignorados e não são enviados à produção.
 
@@ -14,7 +14,7 @@ Nome da empresa, nome da proprietária e senha técnica; capacidades; serviços 
 
 - Uma empresa por publicação. Não há isolamento multiempresa implementado nem anunciado.
 - WhatsApp/e-mail automáticos dependem de provedores oficiais e permanecem sem envio. Contatos manuais e lembretes internos são reais.
-- Backups lógicos privados, retenção e restauração em banco separado foram implementados. A cópia independente de fotos/documentos R2 e a recuperação de produção precisam de configuração da infraestrutura. A rotina diária só pode ser considerada ativa após confirmação do agendamento no Sites.
+- Backups lógicos privados, retenção e restauração em banco separado foram implementados. Um backup foi gravado e confirmado por leitura na hospedagem. O agendamento diário está habilitado no Sites às 03:00, America/Sao_Paulo, a partir de 14/10/2026; a primeira execução agendada ainda não ocorreu. A cópia independente de fotos/documentos R2 e a recuperação de produção precisam de configuração da infraestrutura.
 - Listas operacionais limitadas aos 5.000 registros mais recentes; auditoria aos 500 eventos mais recentes na interface. Registros antigos permanecem no banco. Paginação completa deve ser acrescentada para maior volume.
 - Exportação implementada em CSV. PDF, listas analíticas avançadas, gráficos de giro/recorrência/lucro e fechamento formal de caixa ainda não foram implementados.
 - Comissões são configuradas por pessoa, percentual/fixa e serviços/produtos elegíveis, com base cobrada ou proporcional de pacote. Bônus, escalas e condições avançadas de apuração/pagamento ainda precisam de expansão.
