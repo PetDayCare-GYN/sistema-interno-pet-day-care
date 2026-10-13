@@ -1,0 +1,1 @@
+ALTER TABLE `request_keys` ADD `result_id` text;

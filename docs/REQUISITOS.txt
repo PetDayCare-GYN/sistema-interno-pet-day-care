@@ -1,0 +1,737 @@
+SISTEMA INTEGRADO DE GESTÃO PET
+Projeto: Plataforma de gestão para pet shop, creche canina (day use), hospedagem, banho e tosa e venda de produtos pet.
+1. OBJETIVO DO PROJETO
+Desenvolver um sistema web completo, responsivo, seguro, intuitivo e modular para gerenciar todas as operações de um estabelecimento especializado em cuidados com cães.
+O sistema deverá integrar agenda, cadastro de tutores e pets, creche, hospedagem, banho e tosa, pacotes, estoque, produtos, equipe, comissões, financeiro, saúde preventiva, notificações, relatórios, personalização visual e infraestrutura técnica.
+A aplicação deverá funcionar em computadores, tablets e celulares, com uma interface fácil de utilizar durante a rotina operacional.
+O sistema deverá ser construído para permitir futuras melhorias e expansão, sem precisar reconstruir sua estrutura sempre que um novo módulo for acrescentado.
+IMPORTANTE: não desenvolver apenas telas independentes ou protótipos visuais. Todos os módulos deverão funcionar de verdade, compartilhar os mesmos dados, aplicar regras de negócio consistentes e estar conectados ao banco de dados.
+2. REGRA MAIS IMPORTANTE: INTEGRAÇÃO TOTAL DOS MÓDULOS
+A integração entre os módulos é o requisito central de todo o projeto.
+O cadastro mestre do tutor e o cadastro mestre do pet deverão ser a origem única dos dados da aplicação. Todos os módulos deverão consultar e utilizar esses mesmos registros, sem criar cadastros paralelos ou informações duplicadas.
+Nenhum módulo poderá funcionar como uma ferramenta isolada.
+2.1. Cadastro centralizado
+Cada tutor e cada pet deverão possuir um identificador único no banco de dados.
+O tutor poderá ter vários pets vinculados. Cada pet deverá ter um tutor principal claramente identificado, com possibilidade de registrar outros responsáveis autorizados quando necessário.
+Todos os demais registros deverão se relacionar aos cadastros originais.
+Isso inclui:
+•	Agendamentos.
+•	Creche e day use.
+•	Hospedagem.
+•	Banho e tosa.
+•	Pacotes e créditos.
+•	Vacinas e vermífugos.
+•	Produtos e compras.
+•	Estoque e vendas.
+•	Pagamentos e financeiro.
+•	Histórico de atendimentos.
+•	Ocorrências e atividades.
+•	Notificações e lembretes.
+•	Relatórios gerenciais.
+2.2. Funcionamento integrado
+Sempre que um usuário selecionar um tutor ou um pet, o sistema deverá carregar automaticamente as informações relevantes do cadastro original.
+Ao selecionar um pet, deverão aparecer, conforme o contexto:
+•	Foto em destaque.
+•	Nome e identificação.
+•	Tutor responsável.
+•	Porte, raça e cor da pelagem.
+•	Informações de saúde relevantes.
+•	Pacotes ativos e créditos restantes.
+•	Histórico de serviços.
+•	Pendências de vacinas, vermífugos e documentos.
+•	Restrições alimentares e observações importantes.
+•	Agendamentos futuros e atendimentos anteriores.
+A equipe não deverá precisar digitar novamente informações que já existem no sistema.
+2.3. Exemplo obrigatório de integração
+Quando uma funcionária for agendar um banho, ela deverá localizar o pet pelo nome, pela foto ou pelo tutor.
+Ao selecionar o animal, o sistema deverá apresentar o cadastro correto, identificar o pacote de banho ativo, informar quantos banhos restam e permitir selecionar os serviços adicionais.
+Quando o atendimento for concluído, o sistema deverá atualizar o histórico do pet, consumir um crédito se o serviço estiver coberto pelo pacote e registrar os valores correspondentes, sem cobrar novamente por um serviço já pago.
+Se o atendimento for cancelado ou não realizado, o sistema não deverá consumir créditos indevidamente.
+Essa mesma lógica deverá ser aplicada à creche, hospedagem, saúde preventiva, estoque, pagamentos e demais módulos.
+2.4. Requisitos técnicos da integração
+•	Utilizar relacionamentos reais no banco de dados e identificadores únicos.
+•	Implementar integridade referencial e validações.
+•	Centralizar as regras de negócio.
+•	Evitar duplicidade de cadastros, cobranças, movimentações de estoque e consumo de créditos.
+•	Garantir que alterações sejam refletidas nos módulos relacionados.
+•	Preservar o histórico das operações já concluídas.
+•	Utilizar transações e controles de concorrência para evitar inconsistências.
+•	Criar testes de integração entre os módulos.
+•	Exibir sempre dados reais e atualizados, sem depender de números fixos ou dados fictícios em produção.
+Critério fundamental: o sistema só poderá ser considerado concluído quando os módulos funcionarem em conjunto, e não apenas individualmente.
+3. LOGIN, USUÁRIOS E PERMISSÕES
+Criar um sistema de login seguro para identificar cada usuário e determinar suas permissões.
+O sistema deverá possuir perfis distintos para gestão, operação e administração técnica.
+3.1. Perfis iniciais
+Gestão — proprietárias e gerentes
+Acesso aos módulos administrativos e gerenciais, incluindo agenda, cadastros, serviços, pacotes, estoque, equipe, financeiro, relatórios e configurações, conforme as permissões concedidas.
+Operação — monitoras e banhista
+Acesso às funcionalidades necessárias para a rotina de trabalho, como agenda, identificação dos pets, check-in, check-out, atendimentos, observações e histórico operacional pertinente.
+O acesso a informações financeiras, configurações administrativas e infraestrutura deverá ser restrito.
+Administrador técnico
+Acesso autorizado ao módulo de infraestrutura e às configurações técnicas restritas.
+3.2. Equipe inicial
+Cadastrar inicialmente:
+•	Duas gerentes, que também são as proprietárias.
+•	Duas monitoras da creche.
+•	Uma profissional de banho e tosa.
+O sistema deverá permitir cadastrar novas pessoas futuramente.
+3.3. Regras de permissão
+As permissões deverão ser configuráveis por usuário ou perfil, incluindo leitura, criação, edição, cancelamento, exclusão, exportação e aprovação.
+Ações sensíveis deverão exigir autorização específica e gerar registros de auditoria.
+Implementar recuperação de acesso, encerramento de sessão e proteção contra tentativas abusivas de autenticação.
+4. CADASTRO DE TUTORES
+Criar um cadastro mestre de tutores contendo:
+•	Nome completo.
+•	Telefone e WhatsApp.
+•	E-mail.
+•	Endereço.
+•	Dados adicionais necessários ao atendimento.
+•	Contatos de emergência, quando aplicável.
+•	Observações.
+•	Pets vinculados.
+•	Histórico de agendamentos.
+•	Histórico de serviços e hospedagens.
+•	Pacotes contratados.
+•	Pagamentos realizados e pendentes.
+•	Histórico de comunicações relevantes.
+O sistema deverá permitir pesquisar, consultar e editar os dados sem criar cadastros duplicados.
+Também deverá alertar sobre possíveis duplicidades com base em informações como telefone e e-mail.
+5. CADASTRO DE PETS
+Cada animal deverá possuir uma ficha individual, completa e vinculada ao tutor.
+5.1. Informações cadastrais
+•	Identificador único do pet.
+•	Nome.
+•	Foto em destaque.
+•	Espécie.
+•	Raça.
+•	Porte: pequeno, médio ou grande.
+•	Cor e características da pelagem.
+•	Data de nascimento ou idade, se conhecida.
+•	Peso, quando disponível.
+•	Tutor principal.
+•	Outros responsáveis autorizados.
+•	Contatos de emergência.
+•	Características comportamentais.
+•	Informações de socialização.
+•	Alergias informadas.
+•	Restrições alimentares.
+•	Cuidados especiais.
+•	Alimentação habitual.
+•	Medicamentos e instruções autorizadas.
+•	Documentos e comprovantes.
+•	Observações gerais.
+5.2. Histórico unificado
+O cadastro deverá concentrar o histórico completo do animal:
+•	Frequência na creche.
+•	Hospedagens anteriores.
+•	Banhos e tosas realizados.
+•	Pacotes contratados e créditos restantes.
+•	Vacinas e vermífugos.
+•	Ocorrências.
+•	Atividades registradas.
+•	Compras relacionadas, quando aplicável.
+•	Pagamentos e serviços.
+•	Observações da equipe.
+A foto deverá estar visível na agenda e nas telas operacionais, pois animais diferentes podem possuir o mesmo nome.
+6. AGENDA CENTRALIZADA
+A agenda será um dos principais módulos do sistema e deverá integrar todos os serviços.
+Funcionalidades
+•	Visualização diária, semanal e mensal.
+•	Agendamento de creche/day use.
+•	Agendamento de hospedagem.
+•	Agendamento de banho e tosa.
+•	Cadastro de outros serviços futuramente.
+•	Busca de tutor e pet.
+•	Foto e identificação do animal.
+•	Seleção do profissional responsável.
+•	Horário previsto e duração.
+•	Verificação de disponibilidade.
+•	Consulta de pacotes e créditos.
+•	Registro de serviço avulso ou utilização de pacote.
+•	Confirmação, cancelamento e reagendamento.
+•	Registro de faltas.
+•	Histórico de alterações.
+•	Filtros por serviço, pet, tutor, profissional, período e status.
+•	Lista de espera.
+•	Alertas de conflitos de horários.
+•	Alertas de capacidade excedida.
+•	Acesso rápido ao cadastro mestre.
+A agenda deverá consultar a disponibilidade real e impedir reservas incompatíveis com a capacidade cadastrada.
+7. CRECHE / DAY USE
+A creche corresponde à permanência do cão durante o dia, conforme os horários e as regras do estabelecimento.
+Funcionalidades
+•	Cadastro de preços de diárias avulsas.
+•	Cadastro de pacotes de day use.
+•	Quantidade de créditos contratados.
+•	Preço e validade do pacote.
+•	Registro de entrada e saída.
+•	Controle de créditos utilizados e restantes.
+•	Histórico de frequência.
+•	Registro de presença, falta, atraso e cancelamento.
+•	Controle da capacidade máxima diária.
+•	Lista de pets previstos e presentes.
+•	Identificação dos animais por foto.
+•	Registro de alimentação.
+•	Registro de brincadeiras, atividades e descanso.
+•	Registro de comportamento.
+•	Observações e ocorrências.
+•	Fotos das atividades, quando desejado.
+•	Identificação da monitora responsável.
+•	Alertas de atraso na retirada.
+•	Pendências sanitárias e documentais.
+•	Relatórios de frequência, ocupação e receita.
+Regras de utilização
+O sistema deverá distinguir agendamento de atendimento efetivamente realizado.
+O consumo de créditos deverá obedecer às regras do pacote e ocorrer apenas quando aplicável. Cancelamentos e faltas não deverão consumir créditos automaticamente sem uma regra previamente configurada.
+8. HOSPEDAGEM
+A hospedagem corresponde a períodos de 24 horas, com controle de entrada, saída e duração.
+Funcionalidades
+•	Reserva com data e horário previstos de entrada e saída.
+•	Registro de entrada e saída reais.
+•	Cálculo automático da duração.
+•	Tabela de preços para alta temporada.
+•	Tabela de preços para baixa temporada.
+•	Cadastro dos períodos de alta e baixa temporada.
+•	Preços configuráveis por porte, modalidade ou outras regras comerciais.
+•	Regras configuráveis para hora adicional, tolerância, diária parcial e extensão da hospedagem.
+•	Calendário de ocupação.
+•	Controle de capacidade.
+•	Lista de espera.
+•	Prevenção de reservas sobrepostas ou acima da capacidade.
+•	Registro de alimentação e rotina.
+•	Registro de pertences entregues.
+•	Instruções do tutor.
+•	Contatos de emergência.
+•	Atividades e ocorrências durante a estadia.
+•	Fotos, observações e registros de alimentação.
+•	Identificação de quem entregou e retirou o animal.
+•	Alertas de saída prevista e atraso.
+•	Histórico de hospedagens e valores cobrados.
+As regras para hospedagens que atravessam a mudança entre alta e baixa temporada deverão ser configuráveis. Não presumir um método de cobrança que ainda não tenha sido definido.
+9. BANHO E TOSA
+Criar um módulo de banho e tosa integrado à agenda e ao cadastro mestre do pet.
+9.1. Modalidades
+•	Banho avulso.
+•	Pacotes de banho.
+•	Serviços adicionais.
+•	Tipos de tosa configuráveis.
+9.2. Pacotes de banho
+O pacote inicial deverá contemplar quatro banhos.
+Registrar:
+•	Quantidade contratada.
+•	Preço.
+•	Data de compra.
+•	Validade.
+•	Quantidade utilizada.
+•	Saldo restante.
+•	Histórico de consumo.
+•	Regras de utilização.
+•	Alertas de saldo baixo.
+•	Alertas de vencimento.
+Permitir configurar novos pacotes no futuro.
+9.3. Serviços selecionáveis
+•	Banho.
+•	Corte de unha.
+•	Escovação de dentes.
+•	Tosa higiênica.
+•	Tosa bebê.
+•	Tosa na máquina.
+•	Tosa na tesoura.
+•	Outros tipos de tosa.
+•	Serviços personalizados.
+Os serviços deverão ter preços, durações e regras configuráveis.
+9.4. Ficha de atendimento
+Registrar:
+•	Pet e foto.
+•	Tutor responsável.
+•	Serviços solicitados.
+•	Serviços efetivamente realizados.
+•	Profissional responsável.
+•	Data e horários.
+•	Observações do tutor.
+•	Condição da pelagem na entrada.
+•	Sensibilidades, nós e cuidados especiais.
+•	Fotos de antes e depois, quando desejado.
+•	Produtos utilizados, se houver controle pertinente.
+•	Ocorrências.
+•	Valor do atendimento.
+•	Descontos.
+•	Forma de pagamento.
+•	Pacote utilizado.
+•	Status do atendimento.
+O sistema deverá permitir comparar o histórico dos atendimentos anteriores e registrar preferências do tutor.
+Regras
+Um serviço coberto por pacote não poderá gerar uma cobrança duplicada. Serviços adicionais poderão ser cobrados separadamente.
+O crédito somente deverá ser consumido conforme a regra de utilização e após a conclusão válida do atendimento.
+10. VACINAS, VERMÍFUGOS E SAÚDE PREVENTIVA
+Criar uma área de saúde preventiva vinculada ao cadastro mestre do pet.
+Vacinas
+Registrar:
+•	Nome da vacina.
+•	Data de aplicação.
+•	Próxima dose ou data prevista de renovação.
+•	Comprovante.
+•	Observações.
+•	Situação do registro.
+Vermífugos
+Registrar:
+•	Produto ou medicamento.
+•	Data de administração.
+•	Próxima aplicação prevista.
+•	Instruções e observações.
+•	Comprovante, quando disponível.
+Alertas e lembretes
+•	Antecedência configurável.
+•	Identificação de registros em dia.
+•	Alertas de vencimento próximo.
+•	Alertas de vencimento ultrapassado.
+•	Pendência de comprovação.
+•	Lista de tutores que precisam ser avisados.
+•	Registro de contato realizado.
+•	Data, responsável e retorno do tutor.
+•	Lembretes internos para a equipe.
+As pendências deverão aparecer no cadastro do pet e nos fluxos de agenda e check-in conforme as regras de admissão do estabelecimento.
+O sistema não deverá substituir avaliação veterinária nem declarar aptidão clínica com base apenas em dados administrativos.
+11. PRODUTOS, COMPRAS E ESTOQUE
+Criar um módulo de gestão de produtos com categorias independentes.
+Categorias iniciais
+•	Rações.
+•	Petiscos.
+•	Brinquedos.
+•	Medicamentos.
+Permitir criar novas categorias.
+Cadastro de produtos
+•	Nome.
+•	Descrição.
+•	Categoria.
+•	Marca.
+•	Código ou SKU.
+•	Código de barras, quando disponível.
+•	Unidade de medida.
+•	Quantidade em estoque.
+•	Estoque mínimo.
+•	Custo de aquisição.
+•	Preço de venda.
+•	Fornecedor.
+•	Lote.
+•	Validade, quando aplicável.
+•	Local de armazenamento, se necessário.
+•	Status ativo ou inativo.
+Movimentações
+•	Entrada por compra.
+•	Saída por venda.
+•	Ajustes de inventário.
+•	Perdas e avarias.
+•	Baixas por vencimento.
+•	Devoluções.
+•	Estornos.
+•	Histórico de usuário, data, quantidade e motivo.
+•	Inventário físico.
+•	Comparação entre estoque físico e sistema.
+Alertas e relatórios
+•	Estoque mínimo.
+•	Produtos próximos do vencimento.
+•	Produtos vencidos.
+•	Produtos mais vendidos.
+•	Produtos parados.
+•	Perdas.
+•	Valor estimado do estoque.
+Compras e vendas
+As compras deverão registrar fornecedor, produtos, quantidades, custos e pagamentos.
+As vendas deverão registrar itens, quantidades, valores, descontos, responsável pela compra e vínculo com tutor ou pet quando pertinente.
+A movimentação de estoque e os lançamentos financeiros deverão ocorrer de maneira consistente, sem duplicidade.
+12. EQUIPE, PAGAMENTOS E COMISSÕES
+O sistema deverá gerenciar as duas gerentes/proprietárias, as duas monitoras e a banhista, permitindo a inclusão de novos profissionais.
+Informações
+•	Cadastro e contato.
+•	Função.
+•	Status.
+•	Permissões.
+•	Remuneração fixa.
+•	Comissões.
+•	Bonificações.
+•	Escalas, se utilizadas.
+•	Atendimentos realizados.
+•	Valores apurados.
+•	Pagamentos realizados.
+•	Valores pendentes.
+•	Histórico de alterações.
+Regras de comissão
+Permitir configurar individualmente:
+•	Se a pessoa recebe comissão.
+•	Percentual ou valor fixo.
+•	Serviços ou produtos elegíveis.
+•	Base de cálculo.
+•	Período de apuração.
+•	Condições para pagamento.
+•	Regras de bonificação.
+O sistema deverá impedir comissões duplicadas e apresentar os critérios de cálculo de forma transparente.
+13. FINANCEIRO E CONTROLE DE RESULTADOS
+Criar um módulo financeiro integrado aos serviços, pacotes, produtos, estoque e equipe.
+Funcionalidades
+•	Contas a receber.
+•	Contas a pagar.
+•	Receitas por serviço.
+•	Receitas por produto.
+•	Receitas por pacote.
+•	Receitas por hospedagem.
+•	Despesas operacionais.
+•	Despesas administrativas.
+•	Pagamentos parciais e totais.
+•	Métodos de pagamento configuráveis.
+•	Descontos.
+•	Estornos e reembolsos.
+•	Inadimplência.
+•	Fluxo de caixa.
+•	Fechamento diário, semanal e mensal.
+•	Categorias financeiras.
+•	Comissões.
+•	Relatórios de receitas, despesas, custos e resultados.
+Regras
+Cada lançamento deverá possuir vínculo com sua origem: atendimento, pacote, venda, compra, despesa ou comissão.
+O sistema deverá distinguir faturamento, recebimento efetivo, custos e lucro estimado.
+A venda de um pacote e sua posterior utilização não deverão provocar duplicidade de receita ou cobrança. A forma de contabilização gerencial deverá ser definida e configurável.
+O consumo de pacote não poderá gerar nova cobrança por um serviço já pago, exceto por adicionais ou diferenças autorizadas.
+14. COMUNICAÇÃO E NOTIFICAÇÕES
+Criar uma central de alertas e lembretes internos.
+Alertas previstos
+•	Agendamentos próximos.
+•	Confirmações pendentes.
+•	Entradas e saídas de hospedagem.
+•	Atrasos na retirada.
+•	Vacinas próximas do vencimento.
+•	Vermífugos próximos da próxima aplicação.
+•	Documentos pendentes.
+•	Pacotes com poucos créditos.
+•	Pacotes próximos do vencimento.
+•	Pagamentos pendentes.
+•	Estoque mínimo.
+•	Produtos próximos do vencimento.
+•	Tarefas atrasadas.
+Permitir configurar antecedência, prioridade, responsável e situação de cada alerta.
+Registrar os contatos realizados com tutores e os respectivos retornos.
+Preparar o sistema para futuras integrações com WhatsApp, e-mail ou outros canais oficiais. Não informar que uma mensagem foi enviada sem confirmação do provedor. Quando não houver integração configurada, distinguir claramente os lembretes internos das mensagens efetivamente enviadas.
+15. CHECK-IN, CHECK-OUT E DIÁRIO DE ATIVIDADES
+Criar fluxos rápidos para a rotina da creche e da hospedagem.
+Check-in
+•	Localizar o pet pela foto e pelo cadastro.
+•	Confirmar tutor ou pessoa autorizada.
+•	Registrar data e hora.
+•	Conferir pendências aplicáveis.
+•	Registrar pertences.
+•	Registrar alimentação e instruções.
+•	Registrar observações de entrada.
+•	Identificar a pessoa responsável pelo recebimento.
+Durante a permanência
+•	Alimentação.
+•	Água.
+•	Descanso.
+•	Brincadeiras.
+•	Atividades.
+•	Comportamento.
+•	Fotos.
+•	Ocorrências.
+•	Observações.
+•	Responsável por cada registro.
+•	Data e horário.
+Check-out
+•	Registrar data e hora.
+•	Identificar a pessoa autorizada que retirou o animal.
+•	Registrar observações e ocorrências.
+•	Calcular valores, quando aplicável.
+•	Atualizar presença e ocupação.
+•	Atualizar pacote e financeiro conforme as regras.
+•	Preservar histórico auditável.
+16. PAINEL OPERACIONAL DO DIA
+Criar uma tela inicial com visão rápida das prioridades.
+Indicadores
+•	Pets esperados.
+•	Pets presentes na creche.
+•	Entradas e saídas previstas.
+•	Hospedagens com entrada ou saída.
+•	Banhos e tosas agendados.
+•	Atendimentos em andamento.
+•	Atendimentos concluídos.
+•	Pendências sanitárias.
+•	Documentos pendentes.
+•	Pacotes próximos do fim.
+•	Pagamentos pendentes.
+•	Alertas de estoque.
+•	Tarefas atrasadas.
+•	Lista de espera.
+•	Vagas disponíveis.
+Cada indicador deverá permitir abrir os registros correspondentes.
+Os dados deverão ser calculados a partir dos registros reais. Informações financeiras restritas deverão respeitar as permissões do usuário.
+17. RELATÓRIOS GERENCIAIS
+Disponibilizar relatórios filtráveis por período, serviço, pet, tutor, profissional e outras dimensões pertinentes.
+Relatórios iniciais:
+•	Ocupação diária e por período.
+•	Frequência da creche.
+•	Utilização e saldo de pacotes.
+•	Reservas, cancelamentos e faltas.
+•	Hospedagens por temporada.
+•	Serviços de banho e tosa.
+•	Receitas por serviço e produto.
+•	Recebimentos.
+•	Despesas.
+•	Inadimplência.
+•	Estoque, giro, perdas e vencimentos.
+•	Comissões apuradas e pagas.
+•	Clientes recorrentes.
+•	Frequência de retorno.
+•	Vacinas e vermífugos pendentes.
+•	Documentos pendentes.
+•	Histórico de ocorrências.
+Permitir exportação autorizada em formatos adequados, como CSV ou PDF, quando implementado.
+18. DESIGN E WHITE LABEL
+Criar um módulo chamado Design e White Label, acessível a usuários autorizados, para personalizar a identidade visual da empresa sem alterar manualmente cada tela.
+Funcionalidades
+•	Upload, substituição e remoção da logomarca.
+•	Configuração do nome da empresa.
+•	Configuração de favicon.
+•	Imagens institucionais, quando aplicável.
+•	Cor primária.
+•	Cor secundária.
+•	Cor de destaque.
+•	Cores de fundo.
+•	Cores de textos.
+•	Cores de menus, botões e bordas.
+•	Tema claro e escuro, se aplicável.
+•	Pré-visualização.
+•	Salvar e aplicar alterações.
+•	Restaurar tema padrão.
+•	Persistência das configurações entre sessões e dispositivos.
+Aplicação visual
+A identidade visual deverá ser padronizada em:
+•	Tela de login.
+•	Menus e navegação.
+•	Agenda.
+•	Cadastros.
+•	Creche e hospedagem.
+•	Banho e tosa.
+•	Estoque.
+•	Financeiro.
+•	Relatórios.
+•	Documentos gerados.
+Requisitos técnicos
+•	Utilizar variáveis ou tokens globais de tema.
+•	Aplicar alterações globalmente, sem editar cada módulo individualmente.
+•	Preservar a proporção da logomarca.
+•	Garantir contraste, legibilidade e acessibilidade.
+•	Manter os estados de sucesso, atenção e erro visualmente distintos.
+•	Permitir personalização sem alterar dados, permissões, integrações ou regras de negócio.
+Preparar a estrutura para reutilizar a plataforma em outras empresas.
+Caso seja necessário atender várias empresas, implementar arquitetura multiempresa com separação real dos dados, usuários, arquivos, configurações e relatórios. A simples troca de logomarca não será considerada isolamento multiempresa.
+19. INFRAESTRUTURA E CONTROLE TÉCNICO
+Criar um módulo chamado Infraestrutura ou Controle Técnico, separado das rotinas operacionais.
+Esse módulo deverá documentar a infraestrutura criada, onde o sistema foi publicado, onde está o repositório e como os componentes técnicos estão organizados.
+Informações a documentar
+•	Nome do sistema.
+•	Descrição dos módulos.
+•	Plataforma utilizada para desenvolvimento.
+•	URL da aplicação publicada.
+•	Serviço de hospedagem.
+•	Repositório de código-fonte e URL.
+•	Banco de dados utilizado.
+•	Local de hospedagem do banco.
+•	Domínio.
+•	DNS.
+•	Integrações e serviços externos.
+•	Dependências relevantes.
+•	Data de criação.
+•	Última atualização.
+•	Status dos componentes.
+•	Procedimentos de manutenção.
+•	Backups e recuperação.
+•	Observações técnicas.
+•	Responsáveis técnicos.
+Proteção adicional
+O sistema deverá possuir login normal. Para acessar o módulo de infraestrutura, será exigida uma segunda etapa de autenticação por senha adicional, independente da sessão principal.
+Requisitos:
+•	Acesso restrito a usuários explicitamente autorizados.
+•	Senhas armazenadas com hash seguro, nunca em texto puro.
+•	Limitação de tentativas e proteção contra abuso.
+•	Registro de acessos e alterações administrativas relevantes.
+•	Não registrar a senha digitada em logs.
+•	Não exibir chaves de API, tokens ou credenciais secretas na interface.
+•	Gerenciar segredos por variáveis de ambiente ou serviço apropriado.
+•	Documentar onde as credenciais são gerenciadas sem expor seus valores.
+•	Proteger separadamente hospedagem, banco de dados e repositório com as permissões próprias de cada plataforma.
+A senha adicional não substitui os controles de segurança da infraestrutura real.
+20. AUDITORIA, BACKUPS E RECUPERAÇÃO
+Implementar:
+•	Registro de criação e edição de cadastros importantes.
+•	Registro de cancelamentos.
+•	Registro de estornos.
+•	Registro de ajustes de estoque.
+•	Registro de ajustes de pacotes.
+•	Registro de alterações de preço.
+•	Registro de alterações de permissões.
+•	Identificação do usuário responsável.
+•	Data e hora.
+•	Registro afetado.
+•	Justificativa para ajustes sensíveis.
+•	Backups automáticos conforme a infraestrutura.
+•	Política de retenção.
+•	Procedimento documentado para restauração.
+•	Testes periódicos de recuperação.
+•	Proteção dos backups.
+•	Tratamento de erros.
+•	Mensagens claras quando uma operação falhar.
+O sistema não deverá informar sucesso antes da confirmação da operação. Exclusões relevantes deverão preservar o histórico sempre que possível.
+21. PRIVACIDADE E SEGURANÇA
+Aplicar boas práticas de segurança e os princípios pertinentes da LGPD.
+Requisitos:
+•	Proteger dados pessoais dos tutores.
+•	Restringir acesso às fotos e aos documentos dos pets.
+•	Aplicar permissões por função.
+•	Validar dados no cliente e no servidor.
+•	Proteger sessões e autenticação.
+•	Evitar exposição de dados pessoais em URLs, logs e mensagens de erro.
+•	Validar os arquivos enviados.
+•	Definir políticas de retenção, exportação e exclusão.
+•	Proteger backups.
+•	Separar os dados entre empresas, caso exista operação multiempresa.
+•	Impedir que usuários de uma empresa consultem registros de outra.
+22. EXPERIÊNCIA DE USO E INTERFACE
+Criar uma interface profissional, consistente, intuitiva e responsiva.
+Diretrizes:
+•	Priorizar agenda, busca do pet e identificação por foto.
+•	Reduzir digitação repetida.
+•	Utilizar formulários claros.
+•	Exibir validações e mensagens de erro compreensíveis.
+•	Oferecer estados de carregamento, sucesso, erro e ausência de dados.
+•	Facilitar uso em celular, tablet e computador.
+•	Garantir que os controles sejam utilizáveis por toque.
+•	Disponibilizar busca e filtros.
+•	Pedir confirmação para operações destrutivas.
+•	Manter padrões visuais consistentes.
+•	Utilizar ícones funcionais e acessíveis.
+•	Respeitar as configurações white label.
+23. REGRAS DE NEGÓCIO GERAIS
+•	Preços, pacotes, validades e regras comerciais deverão ser configuráveis.
+•	A alta e a baixa temporada deverão possuir períodos e preços configuráveis.
+•	Serviços agendados não serão automaticamente considerados concluídos.
+•	Créditos não poderão ser consumidos duas vezes.
+•	Pagamentos, receitas, despesas e movimentações de estoque não poderão ser duplicados.
+•	Pacotes consumidos não deverão gerar cobranças duplicadas.
+•	Alterações sensíveis deverão gerar auditoria.
+•	Pendências deverão ser exibidas claramente.
+•	As regras não definidas deverão permanecer configuráveis, sem presumir decisões comerciais.
+•	Relatórios deverão utilizar dados reais.
+•	O sistema deverá manter consistência entre cadastro, agenda, operação, estoque e financeiro.
+24. MODELO DE DADOS E IMPLEMENTAÇÃO
+Antes de desenvolver as telas, mapear as entidades, os relacionamentos e as regras de negócio.
+Criar uma estrutura de dados que contemple, no mínimo:
+•	Tutores.
+•	Pets.
+•	Usuários.
+•	Perfis e permissões.
+•	Serviços.
+•	Agendamentos.
+•	Registros de presença.
+•	Hospedagens.
+•	Atendimentos de banho e tosa.
+•	Pacotes.
+•	Créditos e consumo de pacotes.
+•	Vacinas.
+•	Vermífugos.
+•	Documentos e arquivos.
+•	Produtos.
+•	Categorias.
+•	Marcas.
+•	Fornecedores.
+•	Compras.
+•	Vendas.
+•	Movimentações de estoque.
+•	Receitas.
+•	Despesas.
+•	Pagamentos.
+•	Comissões.
+•	Notificações.
+•	Atividades e ocorrências.
+•	Configurações de design.
+•	Organizações, se houver suporte multiempresa.
+•	Inventário de infraestrutura.
+•	Auditoria.
+Os nomes exatos das tabelas e a tecnologia deverão ser definidos conforme a arquitetura escolhida.
+Centralizar regras de cálculo e validação, documentar as dependências e manter os segredos fora do repositório.
+25. TESTES E CRITÉRIOS DE ACEITE
+Antes de considerar o sistema pronto, testar pelo menos os seguintes cenários:
+1.	Cadastrar um tutor e dois pets com o mesmo nome, confirmando que foto e identificadores permitem diferenciá-los.
+2.	Agendar creche e registrar entrada e saída, conferindo presença, capacidade, histórico e consumo do pacote.
+3.	Agendar hospedagem em período que atravesse a mudança de temporada e validar o cálculo conforme a regra configurada.
+4.	Comprar um pacote de quatro banhos, concluir um atendimento e confirmar que o saldo passa de quatro para três.
+5.	Cancelar um atendimento e confirmar que nenhum crédito indevido é consumido.
+6.	Registrar vacina ou vermífugo e verificar o alerta na antecedência configurada.
+7.	Confirmar que pendências aparecem nos pontos previstos da operação.
+8.	Registrar venda e confirmar baixa de estoque e lançamento financeiro correto.
+9.	Registrar compra e confirmar entrada no estoque e registro financeiro.
+10.	Calcular comissões conforme as regras individuais.
+11.	Confirmar que usuários operacionais não acessam áreas restritas.
+12.	Confirmar que a infraestrutura exige autenticação adicional.
+13.	Confirmar que credenciais secretas não ficam expostas.
+14.	Alterar logomarca e cores e verificar aplicação em todas as telas.
+15.	Confirmar persistência da identidade visual entre sessões.
+16.	Confirmar que relatórios refletem dados reais.
+17.	Simular falha de gravação e confirmar que a interface não informa sucesso incorretamente.
+18.	Confirmar que mudanças no cadastro mestre são refletidas nos módulos relacionados.
+19.	Testar backup e restauração.
+20.	Testar a interface em celular, tablet e computador.
+21.	Se houver várias empresas, testar o isolamento de dados, arquivos, usuários e relatórios.
+22.	Verificar que as operações não geram cobranças, créditos ou movimentações duplicadas.
+26. ORDEM RECOMENDADA DE DESENVOLVIMENTO
+Fase 1 — Fundação
+•	Banco de dados e relacionamentos.
+•	Login e permissões.
+•	Cadastro mestre de tutores e pets.
+•	Fotos e documentos.
+•	Auditoria básica.
+•	Estrutura do módulo de infraestrutura.
+Fase 2 — Operação
+•	Agenda.
+•	Creche/day use.
+•	Check-in e check-out.
+•	Hospedagem.
+•	Banho e tosa.
+•	Pacotes e créditos.
+Fase 3 — Controle
+•	Vacinas e vermífugos.
+•	Produtos e estoque.
+•	Equipe e comissões.
+•	Financeiro e pagamentos.
+Fase 4 — Gestão
+•	Painel operacional.
+•	Notificações e tarefas.
+•	Relatórios.
+•	Lista de espera.
+•	Indicadores de ocupação.
+Fase 5 — Personalização e robustez
+•	White label.
+•	Auditoria ampliada.
+•	Backups e recuperação.
+•	Testes de segurança.
+•	Testes de integração.
+•	Responsividade.
+•	Documentação técnica.
+•	Preparação para expansão.
+A ordem pode ser ajustada, mas a integração dos dados deverá existir desde a primeira fase.
+27. INSTRUÇÕES FINAIS
+Antes de iniciar a implementação, apresentar:
+1.	Arquitetura proposta.
+2.	Modelo de dados e relacionamentos.
+3.	Fluxos de negócio.
+4.	Plano de implementação.
+5.	Estratégia de autenticação e permissões.
+6.	Estratégia de backup e recuperação.
+7.	Estratégia de testes de integração.
+Depois, implementar os módulos com persistência real e integração completa.
+Não apresentar funcionalidades simuladas como concluídas. Não utilizar dados fixos de demonstração como dados reais. Não criar telas sem conexão com os registros e regras do sistema.
+Quando houver decisões comerciais ainda não definidas, como preços, validade de pacotes, tolerância de hospedagem, cobrança de horas adicionais e políticas de cancelamento, solicitar definição ou criar configurações administrativas para que sejam ajustadas posteriormente.
+Documentar limitações, integrações externas que precisam ser configuradas e tarefas ainda pendentes.
+CRITÉRIO FINAL DE SUCESSO
+O resultado deverá ser uma plataforma de gestão pet integrada, segura, responsiva e preparada para evoluir.
+O cadastro mestre do tutor e do pet será a fonte única de dados. Todos os módulos deverão se conectar a essa origem, atualizar os registros pertinentes, preservar o histórico e apresentar informações consistentes.
+O sistema deverá facilitar a rotina das proprietárias e da equipe, melhorar o controle dos animais, organizar os serviços e pacotes, monitorar saúde preventiva, controlar produtos e estoque, acompanhar o financeiro e permitir personalização visual por meio de white label.
+A integração total não é um recurso opcional: é a principal regra arquitetural do projeto.
