@@ -1,6 +1,6 @@
 # Verificação e limites desta entrega
 
-Dezessete testes foram aprovados. As integrações usam o mesmo esquema SQL e as mesmas funções de API da aplicação. Cobrem cadastro central, nomes repetidos, reflexo de alterações, duplicidade de telefone, pacote 4→3, adicionais, comissão proporcional, cancelamento e falta sem consumo, repetição de requisições, capacidade, conflitos, duração, duas políticas de temporada, compra/venda/lote e rollback, pagamentos parciais/estornos, saúde e admissão, autorização, senha adicional/tentativas/revogação, marca/contraste, relatórios, restauração validada, autenticação do backup automático e arquivos privados. Também cobrem perda da resposta após gravação e cliques simultâneos no cliente; uploads repetidos conservam um único arquivo e registro.
+Dezoito testes foram aprovados. As integrações usam o mesmo esquema SQL e as mesmas funções de API da aplicação. Cobrem cadastro central, nomes repetidos, reflexo de alterações, duplicidade de telefone, pacote 4→3, adicionais, comissão proporcional, cancelamento e falta sem consumo, repetição de requisições, capacidade, conflitos, duração, duas políticas de temporada, compra/venda/lote e rollback, pagamentos parciais/estornos, saúde e admissão, autorização, senha adicional/tentativas/revogação, marca/contraste, relatórios, restauração validada, autenticação do backup automático e arquivos privados. Também cobrem perda da resposta após gravação e cliques simultâneos no cliente; uploads repetidos conservam um único arquivo e registro.
 
 Build e TypeScript aprovados. As migrações foram aplicadas também no D1 local, pelo runtime Cloudflare. Teste HTTP da página e sessão: HTTP 200. O teste de fluxo local confirma o consumo de pacote em D1. Dados de teste e sessões locais são ignorados e não são enviados à produção.
 
@@ -24,3 +24,4 @@ Nome da empresa, nome da proprietária e senha técnica; capacidades; serviços 
 - Arquivamento preserva histórico. Uma política específica de retenção/anonimização de dados pessoais deve ser definida pelo estabelecimento antes da operação definitiva.
 
 A plataforma publicada é uma primeira versão funcional integrada. Esta documentação não declara os 27 itens da especificação integralmente concluídos.
+
