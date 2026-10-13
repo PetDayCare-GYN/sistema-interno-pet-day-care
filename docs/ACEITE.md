@@ -1,6 +1,6 @@
 # Verificação e limites desta entrega
 
-Treze testes de integração foram aprovados com o mesmo esquema SQL e as mesmas funções de API usadas pela aplicação. Cobrem cadastro central, nomes repetidos, reflexo de alterações, duplicidade de telefone, pacote 4→3, adicionais, comissão proporcional, cancelamento e falta sem consumo, repetição de requisições, capacidade, conflitos, duração, duas políticas de temporada, compra/venda/lote e rollback, pagamentos parciais/estornos, saúde e admissão, autorização, senha adicional/tentativas/revogação, marca/contraste, relatórios e restauração validada.
+Quinze testes de integração foram aprovados com o mesmo esquema SQL e as mesmas funções de API usadas pela aplicação. Cobrem cadastro central, nomes repetidos, reflexo de alterações, duplicidade de telefone, pacote 4→3, adicionais, comissão proporcional, cancelamento e falta sem consumo, repetição de requisições, capacidade, conflitos, duração, duas políticas de temporada, compra/venda/lote e rollback, pagamentos parciais/estornos, saúde e admissão, autorização, senha adicional/tentativas/revogação, marca/contraste, relatórios, restauração validada, autenticação do backup automático e arquivos privados.
 
 Build e TypeScript aprovados. As migrações foram aplicadas também no D1 local, pelo runtime Cloudflare. Teste HTTP da página e sessão: HTTP 200. O teste de fluxo local confirma o consumo de pacote em D1. Dados de teste e sessões locais são ignorados e não são enviados à produção.
 

@@ -15,13 +15,13 @@ Node 22.13+; instalação pelo script `install:ci`. Comandos:
 ```text
 npm run dev
 npm run build
-node --test tests/integration.test.mjs
+node --test tests/integration.test.mjs tests/security.test.mjs
 node scripts/runtime-smoke.mjs
 ```
 
 O último comando usa exclusivamente a prévia local `127.0.0.1:5173` e cria dados QA no D1 local. Nunca executa gravações em produção. A prévia usa autenticação simulada do starter; essa simulação não integra a versão publicada.
 
-Gere mudanças de esquema com `npm run db:generate`. As migrações SQL são versionadas em `drizzle/`; as regras transacionais estão também documentadas em `db/business.sql`. Não altere uma migração aplicada: acrescente outra. Para desenvolvimento, aplique as pendentes com Wrangler D1 local antes de abrir a prévia. O Sites aplica as migrações publicadas ao banco hospedado.
+Gere mudanças de esquema com `npm run db:generate` e atualize os metadados com `node scripts/schema-columns.mjs`. As migrações SQL são versionadas em `drizzle/`; as regras transacionais estão também documentadas em `db/business.sql`. Não altere uma migração aplicada: acrescente outra. Para desenvolvimento, aplique as pendentes com Wrangler D1 local antes de abrir a prévia. O Sites aplica as migrações publicadas ao banco hospedado.
 
 No Windows desta sessão, o npm foi invocado por seu entrypoint JavaScript oficial e usou cache em `.sites-runtime/`. Git portátil oficial foi usado exclusivamente nessa pasta ignorada. Esses ajustes não fazem parte da aplicação publicada.
 
