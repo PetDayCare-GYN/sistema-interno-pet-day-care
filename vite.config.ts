@@ -5,10 +5,14 @@ import { readExecutionProfile } from "./scripts/execution-profile.mjs";
 import { sites } from "./build/sites-vite-plugin";
 import { connectorPreview } from "./build/connector-preview-plugin.mjs";
 
-const SITE_CREATOR_PLACEHOLDER_DATABASE_ID =
-  "00000000-0000-4000-8000-000000000000";
+// Recursos próprios no Cloudflare (conta Pet Day Care). Estes IDs identificam
+// recursos e não são segredos — podem ser versionados com segurança.
+const PET_DAY_CARE_DATABASE_ID = "34b5d1c8-b18b-4a4f-942d-b30797d97f61";
+// Sem R2 na conta (exige cartão): os anexos ficam no KV, exposto ao código como
+// `env.BUCKET` via lib/kv-r2-adapter.mjs. Binding KV = FILES_KV.
+const PET_DAY_CARE_FILES_KV_ID = "771c30cb35f04f539b0855a4872572fe";
 
-const { d1, r2 } = hostingConfig;
+const { d1 } = hostingConfig;
 
 // macOS Seatbelt blocks FSEvents, so Codex previews need polling for HMR.
 const isCodexSeatbeltSandbox = process.env.CODEX_SANDBOX === "seatbelt";
@@ -16,24 +20,18 @@ const managedLinux = readExecutionProfile() === "managed-linux";
 
 const localBindingConfig = {
   main: "./build/sites-worker.ts",
+  compatibility_date: "2026-05-15",
   compatibility_flags: ["nodejs_compat"],
   d1_databases: d1
     ? [
         {
           binding: d1,
-          database_name: "site-creator-d1",
-          database_id: SITE_CREATOR_PLACEHOLDER_DATABASE_ID,
+          database_name: "pet-day-care",
+          database_id: PET_DAY_CARE_DATABASE_ID,
         },
       ]
     : [],
-  r2_buckets: r2
-    ? [
-        {
-          binding: r2,
-          bucket_name: "site-creator-r2",
-        },
-      ]
-    : [],
+  kv_namespaces: [{ binding: "FILES_KV", id: PET_DAY_CARE_FILES_KV_ID }],
 };
 
 export default defineConfig(async ({ command }) => {
