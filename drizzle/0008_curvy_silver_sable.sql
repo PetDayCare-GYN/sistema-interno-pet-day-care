@@ -1,0 +1,1 @@
+ALTER TABLE `files` ADD `object_key` text;

@@ -19,7 +19,7 @@ Notificações e relatórios consultam esses relacionamentos, sem cadastros para
 1. Cadastrar tutor e pets, com foto opcional e identificadores distintos mesmo para nomes iguais.
 2. Selecionar pet na agenda, consultar saúde/pacotes, escolher serviço, responsável e adicionais. Validar intervalos, capacidade e disponibilidade na gravação.
 3. Check-in registra pessoa autorizada, pertences e instruções. Atividades registram responsável e horário.
-4. Conclusão/check-out calcula duração e valores conforme regras configuradas. Uma transação gera consumo único, cobrança de adicionais/avulso e comissão. Cancelamento/falta não consome pacote. Repetir conclusão não duplica efeitos.
+4. Conclusão/check-out calcula duração e valores conforme regras configuradas. Uma transação gera consumo único, cobrança de adicionais/avulso e comissão. Cancelamento/falta só consome crédito ou gera taxa quando houver política explicitamente configurada no serviço; espera cancelada não consome. Repetir conclusão não duplica efeitos.
 5. Compra de pacote gera fatura uma vez. O uso não gera receita duplicada.
 6. Compra/venda de produtos posta itens, estoque e financeiro em transação; o banco impede estoque negativo. Pagamentos e estornos são registros separados, sem apagar história.
 7. Saúde, vencimentos, capacidade e pendências alimentam alertas e indicadores reais.
@@ -29,7 +29,7 @@ Notificações e relatórios consultam esses relacionamentos, sem cadastros para
 Fundação: esquema, autenticação, permissões, cadastros, arquivos e auditoria.
 Operação: serviços configuráveis, agenda, pacotes, creche, hospedagem, banho, check-in/out e diário.
 Controle: saúde, estoque, compras/vendas, equipe, comissões e financeiro.
-Gestão: painel, alertas internos, relatórios e CSV autorizado.
+Gestão: painel, alertas internos, relatórios, gráficos e CSV/PDF autorizado.
 Robustez: marca global, infraestrutura com senha adicional, backups, testes e documentação de limites.
 
 ## Autenticação e permissões
@@ -49,3 +49,9 @@ Integração real em SQLite com o mesmo SQL e API: nomes repetidos; alterações
 Não há preço, tolerância, validade, taxa adicional, temporada ou comissão presumidos. Serviços/pacotes exigem configuração; hospedagem sem política de cobrança definida é bloqueada. Comunicação externa permanece desativada até a confirmação de um provedor. Cinco posições iniciais são orientadas na configuração da equipe: duas proprietárias, duas monitoras e uma banhista; nomes e e-mails reais são cadastrados pela gestão.
 
 Referências técnicas: https://developers.cloudflare.com/d1/worker-api/d1-database/ e https://developers.cloudflare.com/d1/reference/time-travel/.
+
+## Expansão do aceite — 14/10/2026
+
+45 tabelas, migrações aditivas até 0009. Comissão candidata preserva a regra individual e aguarda o recebimento quando configurado; remuneração/bônus e estornos geram contas separadas. Contagens e saldos usam todos os registros; listas são carregadas por páginas. Agenda e reagendamento conservam a identidade do atendimento.
+
+Cada upload grava original e cópia privada verificada. O backup incorpora manifesto SHA-256/CRC32; ZIPs fornecem portabilidade. O ensaio de restauração usa uma transação que deve falhar no último passo e reverter integralmente. A recuperação real usa transação com gatilhos suspensos durante importação, conferência prévia, trava de manutenção e backup de segurança; preserva identidades, permissões atuais e solicitações de anonimização. Limites e evidências estão em ACEITE.md.

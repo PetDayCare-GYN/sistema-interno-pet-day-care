@@ -1,6 +1,6 @@
 # Pet Day Care — gestão integrada
 
-Aplicação funcional com React/Vinext, servidor Cloudflare Workers, 32 tabelas relacionais D1 e arquivos privados R2. Publicação privada pelo Sites. Não contém cadastros demonstrativos em produção.
+Aplicação funcional com React/Vinext, servidor Cloudflare Workers, 45 tabelas relacionais D1 e arquivos privados R2. Publicação privada pelo Sites. Não contém cadastros demonstrativos em produção.
 
 ## Primeiro acesso
 
@@ -15,7 +15,7 @@ Node 22.13+; instalação pelo script `install:ci`. Comandos:
 ```text
 npm run dev
 npm run build
-node --test tests/integration.test.mjs tests/security.test.mjs tests/client-api.test.mjs
+node --test tests/integration.test.mjs tests/security.test.mjs tests/client-api.test.mjs tests/operations.test.mjs tests/recovery-reports.test.mjs tests/acceptance-guards.test.mjs
 node scripts/runtime-smoke.mjs
 ```
 
@@ -33,15 +33,16 @@ Manifesto de hospedagem: `.openai/hosting.json`. Projeto: `appgprj_6ace87617b9c8
 
 ## Backup e recuperação
 
-O módulo técnico permite criar e baixar backups lógicos privados após senha adicional. A rotina diária usa o acesso de serviço do Sites, com autorização adicional por hash. Consulte `docs/AUTOMACAO.md` para a operação e a retenção.
+O módulo técnico permite criar e baixar backups completos privados, JSON e ZIPs com anexos verificados, após senha adicional. Também oferece recuperação com prévia, checksums, backup de segurança e nova confirmação da senha. A rotina diária usa o acesso de serviço do Sites, com autorização adicional por hash. Consulte `docs/AUTOMACAO.md` para a operação e a retenção.
 
 Para validar um arquivo de backup em SQLite separado:
 
 ```text
-node scripts/restore-backup.mjs backup.json banco-novo.sqlite
+node scripts/restore-backup.mjs banco-novo.sqlite backup.json
+node scripts/restore-backup.mjs banco-novo.sqlite parte1.zip parte2.zip
 ```
 
-O destino precisa ser novo. A restauração desativa os efeitos de negócio durante a importação, restaura os gatilhos e verifica relacionamentos, pacotes, lotes, estoque e financeiro. Não sobrescreve produção. Arquivos R2 e recuperação de produção exigem procedimentos próprios. Backups contêm dados privados e devem permanecer protegidos.
+O destino precisa ser novo. A restauração desativa os efeitos de negócio durante a importação, restaura os gatilhos e verifica relacionamentos, pacotes, lotes, estoque e financeiro. Não sobrescreve produção. Com ZIPs, os anexos são conferidos por checksum e gravados em uma pasta nova junto ao banco. Perda integral do acesso ainda exige procedimentos da infraestrutura. Backups contêm dados privados e devem permanecer protegidos.
 
 ## Documentação
 
@@ -51,3 +52,9 @@ O destino precisa ser novo. A restauração desativa os efeitos de negócio dura
 - `docs/AUTOMACAO.md`: operação de backup diário.
 
 Esta é uma primeira versão funcional integrada. O documento de aceite distingue recursos implementados, configurações necessárias e partes ainda pendentes da especificação integral.
+
+## Verificação da interface
+
+O teste tests/ui.acceptance.mjs usa apenas http://127.0.0.1:5174 e exige uma prévia com D1/R2 local isolado. Executar com PLAYWRIGHT_BROWSERS_PATH apontando para o navegador QA instalado. Ele cria dados locais e valida três tamanhos, toque emulado, recuperação com fotos, formulários e resposta perdida. Nunca apontar esse script para produção. Consulte docs/ACEITE.md.
+
+Publicação: https://pet-day-care-gestao.spunkychick64.chatgpt.site — acesso pela conta ChatGPT autorizada.

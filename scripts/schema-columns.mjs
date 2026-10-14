@@ -3,6 +3,10 @@ const snapshots=readdirSync('drizzle/meta').filter(n=>n.endsWith('_snapshot.json
 const snapshot=JSON.parse(readFileSync('drizzle/meta/'+snapshots.at(-1),'utf8'));
 const columns=Object.fromEntries(Object.values(snapshot.tables).map(table=>[table.name,Object.keys(table.columns)]));
 writeFileSync('db/columns.mjs','// Generated from the current Drizzle schema; contains no runtime data.\nexport const tableColumns = '+JSON.stringify(columns,null,2)+';\n');
+const relations=Object.fromEntries(Object.values(snapshot.tables).map(table=>[table.name,Object.values(table.foreignKeys).map(fk=>({columns:fk.columnsFrom,target:fk.tableTo,targetColumns:fk.columnsTo}))]));
+writeFileSync('db/relations.mjs','// Generated foreign keys used to validate recovery snapshots.\nexport const tableRelations = '+JSON.stringify(relations,null,2)+';\n');
+const defaults=Object.fromEntries(Object.values(snapshot.tables).map(table=>[table.name,Object.fromEntries(Object.values(table.columns).filter(c=>c.default!==undefined).map(c=>[c.name,c.default]))]));
+writeFileSync('db/defaults.mjs','// Generated schema defaults for importing older snapshots.\nexport const columnDefaults = '+JSON.stringify(defaults,null,2)+';\n');
 const rules=readFileSync('db/business.sql','utf8').split('--> statement-breakpoint').map(sql=>sql.trim().replace(/^CREATE TRIGGER /,'CREATE TRIGGER IF NOT EXISTS ')).filter(Boolean);
 writeFileSync('db/rules.mjs','// Generated one-statement trigger definitions for atomic first configuration.\nexport const databaseRules = '+JSON.stringify(rules,null,2)+';\n');
 console.log('Metadados de '+Object.keys(columns).length+' tabelas gerados.');

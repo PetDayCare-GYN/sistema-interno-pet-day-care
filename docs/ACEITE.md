@@ -1,27 +1,43 @@
-# Verificação e limites desta entrega
+# Verificação e limites da entrega
 
-Dezoito testes foram aprovados. As integrações usam o mesmo esquema SQL e as mesmas funções de API da aplicação. Cobrem cadastro central, nomes repetidos, reflexo de alterações, duplicidade de telefone, pacote 4→3, adicionais, comissão proporcional, cancelamento e falta sem consumo, repetição de requisições, capacidade, conflitos, duração, duas políticas de temporada, compra/venda/lote e rollback, pagamentos parciais/estornos, saúde e admissão, autorização, senha adicional/tentativas/revogação, marca/contraste, relatórios, restauração validada, autenticação do backup automático e arquivos privados. Também cobrem perda da resposta após gravação e cliques simultâneos no cliente; uploads repetidos conservam um único arquivo e registro.
+Atualizado em 14/10/2026. As pendências de implementação deste documento foram executadas. O sistema continua integrado ao cadastro mestre, com D1 e R2 privados. Nenhum cadastro de demonstração foi enviado à produção.
 
-Build e TypeScript aprovados. As migrações foram aplicadas também no D1 local, pelo runtime Cloudflare. Teste HTTP da página e sessão: HTTP 200. O teste de fluxo local confirma o consumo de pacote em D1. Dados de teste e sessões locais são ignorados e não são enviados à produção.
+## Evidência de verificação
 
-Não havia navegador habilitado nesta sessão. Portanto, QA visual e interação por toque em celular, tablet e desktop não estão verificados. CSS contém adaptações para esses tamanhos, mas isso não equivale a teste visual concluído.
+42 testes de integração aprovados com o mesmo esquema SQL e funções da API. Além dos 18 cenários anteriores, cobrem reagendamento e promoção da espera com rollback, capacidade por serviço, horários/feriados/escalas, serviços efetivamente realizados, inventário físico, devolução integral e reembolso pendente, remuneração/bônus, comissão condicionada ao recebimento e encerramento da apuração, fechamento/reabertura de caixa, paginação, documentos exigidos, recuperação com anexos, checksums, revisão concorrente, retenção e remoção de identificadores, restrições de manutenção, filtros e valores dos relatórios.
 
-## Configuração necessária ao primeiro acesso
+QA no Chromium com computador 1366×900, tablet 820×1180 e celular 390×844; 13 telas por tamanho. Toque emulado no tablet/celular, navegação, formulários, nomes repetidos diferenciados por identificação, ausência de transbordamento da página e ausência de erros JavaScript confirmados. Uma resposta perdida após gravação real mantém o formulário aberto e permite repetir sem duplicar o cadastro. Não houve teste em aparelhos físicos nem em Safari/Firefox.
 
-Nome da empresa, nome da proprietária e senha técnica; capacidades; serviços e preços; modelos de pacotes e validade; políticas de duração, temporadas, períodos parciais e hora adicional da hospedagem; nomes/e-mails reais da equipe, acesso privado das contas; comissões individuais; requisitos sanitários; identidade visual.
+O runtime Cloudflare local aplicou as migrações 0000–0009. No D1/R2 local, o fluxo de quatro banhos confirmou saldo 4→3; backup completo com fotos e recuperação protegida confirmaram relações, acesso atual e arquivos. A recuperação de produção não foi executada para teste. O PDF foi renderizado e inspecionado visualmente, com tabelas, identidade, filtros, identificação repetida nas partes e paginação. Artefatos de QA permanecem em outputs/qa, ignorados pelo Git.
 
-## Limites e trabalho remanescente
+## Pendências de código executadas
 
-- Uma empresa por publicação. Não há isolamento multiempresa implementado nem anunciado.
-- WhatsApp/e-mail automáticos dependem de provedores oficiais e permanecem sem envio. Contatos manuais e lembretes internos são reais.
-- Backups lógicos privados, retenção e restauração em banco separado foram implementados. Um backup foi gravado e confirmado por leitura na hospedagem. O agendamento diário está habilitado no Sites às 03:00, America/Sao_Paulo, a partir de 14/10/2026; a primeira execução agendada ainda não ocorreu. A cópia independente de fotos/documentos R2 e a recuperação de produção precisam de configuração da infraestrutura.
-- Listas operacionais limitadas aos 5.000 registros mais recentes; auditoria aos 500 eventos mais recentes na interface. Registros antigos permanecem no banco. Paginação completa deve ser acrescentada para maior volume.
-- Exportação implementada em CSV. PDF, listas analíticas avançadas, gráficos de giro/recorrência/lucro e fechamento formal de caixa ainda não foram implementados.
-- Comissões são configuradas por pessoa, percentual/fixa e serviços/produtos elegíveis, com base cobrada ou proporcional de pacote. Bônus, escalas e condições avançadas de apuração/pagamento ainda precisam de expansão.
-- Ajustes, perdas, inventários e devoluções de estoque preservam motivos e auditoria; reembolso é feito no financeiro. Devolução completa por um assistente único de estorno de pedido ainda não existe.
-- Banho/tosa compartilham ficha de atendimento e adicionais configuráveis. Registro estruturado separado de condição de pelagem, todos os serviços efetivamente realizados e fotos antes/depois precisa de refinamento; observações e arquivos já são persistidos.
-- Lista de espera está implementada. Sua promoção exige criar uma nova reserva após conferir a disponibilidade; reagendamento exige cancelar a anterior e criar a nova. Calendário gráfico mensal e horários de trabalho/feriados ainda precisam de expansão.
-- Arquivamento preserva histórico. Uma política específica de retenção/anonimização de dados pessoais deve ser definida pelo estabelecimento antes da operação definitiva.
+- Listas com paginação e busca no banco; auditoria paginada com detalhes sem segredos. A primeira carga traz até 100 registros por lista, e o usuário pode carregar os seguintes. Pagamentos acumulados e indicadores consultam todo o banco.
+- Histórico mestre do tutor e financeiro vinculado ao pet; faturamento de outro pet do tutor não aparece como faturamento deste animal.
+- Agenda por dia, semana e mês; filtros; reagendamento atômico; promoção da espera; extensão de hospedagem; capacidade por modalidade, serviço e profissional; horários, feriados e escalas configuráveis.
+- Pelagem, observações de entrada/saída, serviços solicitados/realizados e fotos antes/depois vinculadas ao atendimento; fotos vinculadas ao diário.
+- Marcas e descrição dos produtos; inventário físico; devolução integral de venda/compra com estoque, saldo e reembolso pendente. Reembolso exige pagamento registrado, sem simular devolução de dinheiro.
+- Categorias financeiras, responsável beneficiário, fluxo realizado e fechamento/reabertura auditado do caixa. Resultado estimado distingue receita gerencial de recebimento e informa custo histórico desconhecido.
+- Função, salário por apuração, bônus/meta, escalas e comissão individual fixa/percentual, por conclusão/recebimento e período. A regra é preservada em cada operação; pagamento pode aguardar o encerramento do período.
+- Alertas por antecedência/tipo, prioridade, responsável, situação e adiamento; documentos pendentes e movimentos previstos de hospedagem. Contatos e retornos permanecem identificados como registros manuais.
+- Indicadores reais, relatórios gerenciais com período/pet/tutor/serviço/profissional, gráficos de giro/recorrência/resultado e exportações CSV/PDF autorizadas.
+- Identidade no acesso, menus, formulários e documentos; logo/favicon, cores de painéis, menus, texto e bordas, claro/escuro, contraste e restauração do padrão.
+- Inventário técnico persistido de aplicação, fonte privada e URL, banco, arquivos, domínio/DNS gerenciados, autenticação e backup, com dependências e manutenção.
+- Backup com cópias verificadas dos anexos, ZIP portátil, retenção e ensaio de recuperação com rollback. Recuperação exige senha adicional, conferência de arquivos, plano vigente, confirmação explícita e backup de segurança; preserva acessos e solicitações de remoção de identificadores.
+- Política administrativa de retenção, exportação autorizada e remoção de identificadores pessoais. Reservas abertas, pets ativos, prazo não cumprido e saldos pendentes bloqueiam a remoção; arquivos e detalhes de auditoria vinculados são tratados sem apagar valores históricos.
 
-A plataforma publicada é uma primeira versão funcional integrada. Esta documentação não declara os 27 itens da especificação integralmente concluídos.
+## Configuração real necessária
 
+Nome da empresa, proprietárias e equipe real; contas ChatGPT autorizadas; senha técnica; capacidades; serviços/preços; modelos de pacote e validade; temporadas, duração, tolerância, horas adicionais, taxas/créditos em cancelamento/falta; regras de comissão e remuneração; comprovantes e documentos; horário/feriados; marca e política de retenção. Os formulários administrativos permitem definir estas decisões. Não foram presumidos preços, funcionários ou regras comerciais em produção.
+
+## Limites e trabalho dependente de infraestrutura
+
+- Uma empresa por publicação. Multiempresa real fica condicionado à necessidade indicada na especificação; não há isolamento multiempresa anunciado.
+- WhatsApp/e-mail automáticos aguardam provedores e credenciais oficiais. O sistema registra contatos, tarefas e alertas internos; não afirma ter enviado mensagens externas.
+- A cópia dos anexos fica protegida no mesmo R2. Guardar todas as partes ZIP fora da hospedagem fornece cópia independente; envio automático para outro provedor depende de um destino real e suas credenciais.
+- Recuperação protegida foi validada em SQLite separado e D1/R2 local. Perda integral de banco/acesso exige recuperação pela infraestrutura/conta proprietária, além do fluxo dentro da aplicação. Time Travel e sua janela dependem do serviço da hospedagem.
+- Backup lógico até 20 MB; ZIP em partes de até 250 anexos; PDF até 2.000 linhas; relatórios até 366 dias. Volume superior exige exportação/recuperação pela infraestrutura ou filtros menores. Remoção administrativa de grande volume exige assistência quando ultrapassar a transação suportada.
+- Custos antigos ausentes impedem afirmar lucro exato. O estabelecimento deve escolher reconhecimento gerencial de pacote na contratação ou consumo; saldos e recebimentos permanecem separados.
+- O backup automático agendado às 03:00 America/Sao_Paulo executou em 14/10/2026 às 05:59:55 UTC: d8c7560d-8f1c-426c-91fe-5568d227108d. Essa execução anterior à expansão dos anexos foi lógica; a nova versão oferece backup completo e ensaio em cada conclusão.
+
+Os 27 tópicos da especificação foram usados como referência de arquitetura, módulos, regras e processo. Esta verificação não equivale à homologação integral pela empresa nem à configuração das integrações externas.

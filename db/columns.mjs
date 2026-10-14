@@ -9,8 +9,24 @@ export const tableColumns = {
     "actor_id",
     "created_at"
   ],
+  "alert_states": [
+    "id",
+    "fingerprint",
+    "priority",
+    "user_id",
+    "status",
+    "snooze_until",
+    "notes",
+    "actor_id",
+    "updated_at",
+    "created_at"
+  ],
   "appointments": [
     "id",
+    "coat_condition",
+    "performed_services",
+    "entry_notes",
+    "exit_notes",
     "pet_id",
     "service_id",
     "user_id",
@@ -42,6 +58,7 @@ export const tableColumns = {
   ],
   "audit": [
     "id",
+    "details",
     "actor_id",
     "action",
     "entity",
@@ -49,10 +66,38 @@ export const tableColumns = {
     "reason",
     "created_at"
   ],
+  "backup_files": [
+    "id",
+    "backup_id",
+    "file_id",
+    "created_at"
+  ],
   "backups": [
     "id",
+    "status",
+    "file_count",
+    "copied_files",
+    "verified_at",
     "name",
     "object_key",
+    "actor_id",
+    "created_at"
+  ],
+  "brands": [
+    "id",
+    "name",
+    "created_at"
+  ],
+  "cash_closures": [
+    "id",
+    "period_start",
+    "period_end",
+    "opening_cents",
+    "expected_cents",
+    "counted_cents",
+    "snapshot",
+    "status",
+    "reason",
     "actor_id",
     "created_at"
   ],
@@ -68,8 +113,22 @@ export const tableColumns = {
     "expires_at",
     "created_at"
   ],
+  "commission_candidates": [
+    "id",
+    "user_id",
+    "source_type",
+    "source_id",
+    "funding_type",
+    "funding_id",
+    "condition",
+    "amount_cents",
+    "rule",
+    "reversed",
+    "created_at"
+  ],
   "commissions": [
     "id",
+    "reversed",
     "user_id",
     "source_type",
     "source_id",
@@ -79,6 +138,9 @@ export const tableColumns = {
   ],
   "communications": [
     "id",
+    "health_id",
+    "return_notes",
+    "return_at",
     "tutor_id",
     "kind",
     "notes",
@@ -103,6 +165,13 @@ export const tableColumns = {
   ],
   "files": [
     "id",
+    "object_key",
+    "archive_hash",
+    "archive_crc32",
+    "document_type",
+    "appointment_id",
+    "activity_id",
+    "removed_at",
     "pet_id",
     "health_id",
     "kind",
@@ -110,6 +179,12 @@ export const tableColumns = {
     "mime",
     "size",
     "actor_id",
+    "created_at"
+  ],
+  "financial_categories": [
+    "id",
+    "name",
+    "kind",
     "created_at"
   ],
   "health": [
@@ -125,6 +200,10 @@ export const tableColumns = {
   ],
   "infrastructure": [
     "id",
+    "description",
+    "dependencies",
+    "maintenance",
+    "updated_at",
     "name",
     "kind",
     "url",
@@ -134,8 +213,21 @@ export const tableColumns = {
     "notes",
     "created_at"
   ],
+  "inventory_counts": [
+    "id",
+    "product_id",
+    "lot_id",
+    "expected",
+    "counted",
+    "reason",
+    "actor_id",
+    "created_at"
+  ],
   "invoices": [
     "id",
+    "category_id",
+    "party_user_id",
+    "original_amount_cents",
     "kind",
     "source_type",
     "source_id",
@@ -153,13 +245,28 @@ export const tableColumns = {
     "stock",
     "created_at"
   ],
+  "maintenance_locks": [
+    "id",
+    "expires_at",
+    "created_at"
+  ],
   "order_items": [
     "id",
+    "cost_cents",
     "order_id",
     "product_id",
     "lot_id",
     "quantity",
     "unit_cents",
+    "created_at"
+  ],
+  "order_returns": [
+    "id",
+    "order_id",
+    "original_invoice_cents",
+    "settled_cents",
+    "reason",
+    "actor_id",
     "created_at"
   ],
   "orders": [
@@ -181,6 +288,14 @@ export const tableColumns = {
     "settings",
     "theme",
     "technical_hash",
+    "created_at"
+  ],
+  "package_adjustments": [
+    "id",
+    "package_id",
+    "units",
+    "reason",
+    "actor_id",
     "created_at"
   ],
   "package_templates": [
@@ -214,6 +329,17 @@ export const tableColumns = {
     "actor_id",
     "created_at"
   ],
+  "payroll": [
+    "id",
+    "user_id",
+    "kind",
+    "period_start",
+    "period_end",
+    "amount_cents",
+    "rule",
+    "actor_id",
+    "created_at"
+  ],
   "pets": [
     "id",
     "tutor_id",
@@ -234,8 +360,22 @@ export const tableColumns = {
     "archived",
     "created_at"
   ],
+  "privacy_jobs": [
+    "id",
+    "processed_files",
+    "backup_cursor",
+    "tutor_id",
+    "status",
+    "files",
+    "purge_backups",
+    "reason",
+    "actor_id",
+    "created_at"
+  ],
   "products": [
     "id",
+    "description",
+    "brand_id",
     "category_id",
     "supplier_id",
     "name",
@@ -270,6 +410,10 @@ export const tableColumns = {
   ],
   "services": [
     "id",
+    "cancel_credit",
+    "no_show_credit",
+    "cancellation_fee_cents",
+    "no_show_fee_cents",
     "name",
     "kind",
     "price_cents",
@@ -282,8 +426,17 @@ export const tableColumns = {
     "partial_policy",
     "created_at"
   ],
+  "shifts": [
+    "id",
+    "user_id",
+    "start_at",
+    "end_at",
+    "notes",
+    "created_at"
+  ],
   "stock_events": [
     "id",
+    "kind",
     "product_id",
     "lot_id",
     "order_item_id",
@@ -312,6 +465,7 @@ export const tableColumns = {
   ],
   "tutors": [
     "id",
+    "anonymized_at",
     "name",
     "phone",
     "email",
@@ -323,6 +477,13 @@ export const tableColumns = {
   ],
   "users": [
     "id",
+    "commission_pay_after_period",
+    "job_title",
+    "commission_period",
+    "commission_condition",
+    "bonus_kind",
+    "bonus_value",
+    "bonus_target",
     "identity_id",
     "email",
     "name",
