@@ -1,3 +1,4 @@
+import {photoPng} from './photo-fixtures.mjs';
 // Owned local preview only. Uses real APIs and D1; fixtures never go to deployment.
 import {chromium,expect} from '@playwright/test';
 import assert from 'node:assert/strict';
@@ -11,9 +12,9 @@ try{
  await request('technical/unlock',{password:'Local-test-password-2026'});await request('technical/upgrade',{});
  await request('settings',{capacities:{daycare:5,boarding:5,grooming:5,extra:0},boarding_duration:'planned',alert_days:15,require_health:false,required_vaccines:[],required_documents:[],payment_methods:['PIX','Dinheiro'],backup_retention_days:30,package_accounting:'consumption'});
  let data=await request('state'),tutor=data.lists.tutors.find(t=>t.name==='Tutora QA visual');if(!tutor)tutor=await request('records/tutors',{name:'Tutora QA visual',phone:'11900000123'});
- let pets=data.lists.pets.filter(p=>p.tutor_id===tutor.id);for(let i=pets.length;i<2;i++)await request('records/pets',{name:'Luna',tutor_id:tutor.id,species:'Cão',breed:i?'Poodle':'Vira-lata',size:'Pequeno'});
+ let pets=data.lists.pets.filter(p=>p.tutor_id===tutor.id);for(let i=pets.length;i<2;i++){const r=await seed.request.post(base+'/api/pets',{headers:{'Idempotency-Key':crypto.randomUUID()},multipart:{fields:JSON.stringify({name:'Luna',tutor_id:tutor.id,species:'Cão',breed:i?'Poodle':'Vira-lata',size:'Pequeno'}),photo:{name:'foto.png',mimeType:'image/png',buffer:photoPng()}}});assert.equal(r.status(),200,await r.text());}
  data=await request('state');pets=data.lists.pets.filter(p=>p.tutor_id===tutor.id);
- const png=Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+/l1sAAAAASUVORK5CYII=','base64');
+ const png=photoPng();
  for(const pet of pets){if(!pet.photo_id){const r=await seed.request.post(base+'/api/files',{headers:{'Idempotency-Key':crypto.randomUUID()},multipart:{kind:'photo',pet_id:pet.id,file:{name:'foto-QA.png',mimeType:'image/png',buffer:png}}});assert.equal(r.status(),200,await r.text());}}
  let service=data.lists.services.find(s=>s.name==='Banho QA visual');if(!service)service=await request('records/services',{name:'Banho QA visual',kind:'grooming',price_cents:8500,duration_minutes:60,capacity:5,active:true});
  let template=data.lists.package_templates.find(t=>t.name==='Quatro banhos QA');if(!template)template=await request('records/package_templates',{name:'Quatro banhos QA',service_id:service.id,credits:4,price_cents:30000,valid_days:60,active:true});
@@ -28,7 +29,7 @@ try{
   for(const label of nav){await navigate(label);await expect(p.getByRole('heading',{name:label,exact:true}).first()).toBeVisible();await p.waitForTimeout(250);assert.equal(await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),true,name+' overflow '+label);if(['Agenda','Relatórios','Configurações','Infraestrutura','Pets'].includes(label))await p.screenshot({path:'outputs/qa/'+name+'-'+label.toLowerCase().replaceAll(' ','-')+'.png',fullPage:true});}
   await navigate('Infraestrutura');await p.getByLabel('Senha adicional').fill('Local-test-password-2026');await click(p.getByRole('button',{name:'Autorizar por 15 minutos'}));await expect(p.getByRole('heading',{name:'Backup completo e recuperação'})).toBeVisible();await expect(p.getByRole('heading',{name:'Auditoria completa'})).toBeVisible();await p.screenshot({path:'outputs/qa/'+name+'-tecnico-aberto.png',fullPage:true});
   await navigate('Configurações');const rules=p.locator('section').filter({has:p.getByRole('heading',{name:'Regras do estabelecimento',exact:true})});await click(rules.getByRole('button',{name:'Salvar',exact:true}));await expect(p.locator('.error')).toHaveCount(0);
-  await navigate('Pets');const cards=p.locator('.pet-card').filter({has:p.getByRole('heading',{name:'Luna',exact:true})});assert.equal(await cards.count(),2);assert.notEqual(await cards.nth(0).innerText(),await cards.nth(1).innerText());await click(cards.first());await expect(p.getByRole('heading',{name:'Financeiro vinculado a este pet'})).toBeVisible();
+  await navigate('Pets');const cards=p.locator('.pet-card').filter({hasText:'Tutora QA visual'});assert.equal(await cards.count(),2);assert.notEqual(await cards.nth(0).innerText(),await cards.nth(1).innerText());await click(cards.first());await expect(p.getByRole('heading',{name:'Financeiro vinculado a este pet'})).toBeVisible();
   await navigate('Tutores');await click(p.getByRole('button',{name:'Novo registro',exact:true}));const dialog=p.getByRole('dialog');await expect(dialog).toBeVisible();await dialog.getByLabel('Nome completo').fill('Teste visual '+name);await dialog.getByLabel('WhatsApp').fill('119'+Date.now().toString().slice(-8));await click(dialog.getByRole('button',{name:'Salvar',exact:true}));await expect(dialog).not.toBeVisible();await expect(p.getByRole('status')).toContainText('Gravação confirmada');
   results.push({device:name,viewport:[width,height],touch,navigation:nav.length,duplicateNames:true,formSaved:true,overflow:false});await context.close();
  }

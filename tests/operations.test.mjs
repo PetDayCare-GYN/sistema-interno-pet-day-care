@@ -1,3 +1,4 @@
+import {createPet} from './photo-fixtures.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {fixture,call,ok,book,finish,times,configureStaff,purchase,sale,owner} from './fixtures.mjs';
@@ -15,13 +16,13 @@ test('Reagendamento preserva identidade; promoção conflitante mantém a espera
 });
 test('Falha no reagendamento preserva o horário e os vínculos anteriores',async()=>{
  const f=await fixture(),a=await book(f);const old=f.env.DB.sqlite.prepare('SELECT * FROM appointments WHERE id=?').get(a.id);
- const other=await ok(f.env,'records/pets',{name:'Outro pet',tutor_id:f.tutor.id,species:'Cão',size:'Médio'});await book(f,{pet_id:other.id,...times(2)});
+ const other=await createPet(f.env,owner,{name:'Outro pet',tutor_id:f.tutor.id,species:'Cão',size:'Médio'});await book(f,{pet_id:other.id,...times(2)});
  assert.equal((await call(f.env,'appointments/'+a.id,{action:'reschedule',reason:'Alteração de teste',...times(2)},'PATCH')).status,409);
  assert.deepEqual(f.env.DB.sqlite.prepare('SELECT * FROM appointments WHERE id=?').get(a.id),old);f.env.DB.close();
 });
 test('A capacidade específica do serviço é aplicada além da capacidade global',async()=>{
  const f=await fixture();await ok(f.env,'records/services/'+f.service.id,{name:'Banho',kind:'grooming',price_cents:8000,duration_minutes:60,capacity:1,active:true},'PATCH');await book(f);
- const other=await ok(f.env,'records/pets',{name:'Outro',tutor_id:f.tutor.id,species:'Cão',size:'Pequeno'}),staff=await ok(f.env,'users',{name:'Outra profissional',email:'other@example.test',role:'operation',active:true,permissions:{}});
+ const other=await createPet(f.env,owner,{name:'Outro',tutor_id:f.tutor.id,species:'Cão',size:'Pequeno'}),staff=await ok(f.env,'users',{name:'Outra profissional',email:'other@example.test',role:'operation',active:true,permissions:{}});
  const r=await call(f.env,'appointments',{pet_id:other.id,service_id:f.service.id,user_id:staff.id,extras:[],...times()});assert.equal(r.status,409);assert.match(r.data.error,/Capacidade do serviço/);f.env.DB.close();
 });
 test('Comissão por recebimento aguarda quitação e conserva a regra original',async()=>{

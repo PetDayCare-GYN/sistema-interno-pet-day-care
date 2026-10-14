@@ -55,3 +55,9 @@ Referências técnicas: https://developers.cloudflare.com/d1/worker-api/d1-datab
 45 tabelas, migrações aditivas até 0009. Comissão candidata preserva a regra individual e aguarda o recebimento quando configurado; remuneração/bônus e estornos geram contas separadas. Contagens e saldos usam todos os registros; listas são carregadas por páginas. Agenda e reagendamento conservam a identidade do atendimento.
 
 Cada upload grava original e cópia privada verificada. O backup incorpora manifesto SHA-256/CRC32; ZIPs fornecem portabilidade. O ensaio de restauração usa uma transação que deve falhar no último passo e reverter integralmente. A recuperação real usa transação com gatilhos suspensos durante importação, conferência prévia, trava de manutenção e backup de segurança; preserva identidades, permissões atuais e solicitações de anonimização. Limites e evidências estão em ACEITE.md.
+
+## Identificação visual do cadastro mestre
+
+pets.photo_id continua sendo a única referência da fotografia de identificação. O cadastro com imagem grava pet e metadados na mesma transação, após validar PNG/JPEG, tamanho, estrutura e cópia R2. Falhas removem objetos provisórios. A troca altera a referência e oculta a foto anterior das consultas normais, preservando cópias históricas protegidas pelo backup. Foto antes/depois e diário permanecem anexos de atendimento, sem substituir a identidade do animal.
+
+APIs de identificação retornam projeções mínimas autorizadas do pet e tutor; contexto do atendimento é consultado novamente pelo ID antes de abrir a ficha. Componentes e exportações consultam a imagem atual. O banco impede vincular foto de outro pet e confirmar atendimento sem imagem; cadastros antigos permanecem íntegros e podem ser regularizados. Não houve mudança de esquema: 45 tabelas. As novas regras são instaladas na configuração ou manutenção autenticada.

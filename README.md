@@ -15,7 +15,7 @@ Node 22.13+; instalação pelo script `install:ci`. Comandos:
 ```text
 npm run dev
 npm run build
-node --test tests/integration.test.mjs tests/security.test.mjs tests/client-api.test.mjs tests/operations.test.mjs tests/recovery-reports.test.mjs tests/acceptance-guards.test.mjs
+node --test tests/integration.test.mjs tests/security.test.mjs tests/client-api.test.mjs tests/operations.test.mjs tests/recovery-reports.test.mjs tests/acceptance-guards.test.mjs tests/pet-identification.test.mjs
 node scripts/runtime-smoke.mjs
 ```
 
@@ -58,3 +58,9 @@ Esta é uma primeira versão funcional integrada. O documento de aceite distingu
 O teste tests/ui.acceptance.mjs usa apenas http://127.0.0.1:5174 e exige uma prévia com D1/R2 local isolado. Executar com PLAYWRIGHT_BROWSERS_PATH apontando para o navegador QA instalado. Ele cria dados locais e valida três tamanhos, toque emulado, recuperação com fotos, formulários e resposta perdida. Nunca apontar esse script para produção. Consulte docs/ACEITE.md.
 
 Publicação: https://pet-day-care-gestao.spunkychick64.chatgpt.site — acesso pela conta ChatGPT autorizada.
+
+## Fotografia obrigatória do animal
+
+Cadastre/edite o pet com fotografia PNG ou JPEG/JPG, até 5 MB. A prévia aparece antes de salvar; substituir conserva o cadastro e remover exige confirmação. Pets antigos sem foto ficam pendentes; a identificação é reutilizada por ID em toda a operação. Consulte docs/IDENTIFICACAO_VISUAL_PETS.txt e docs/ACEITE.md. Testes: tests/pet-identification.test.mjs e tests/ui.pet-identification.mjs, exclusivamente no ambiente local isolado.
+
+O QA visual de identificação exige duas fotos locais em .sites-runtime/qa-images/golden.jpg e poodle.jpg. A procedência é registrada em SOURCES.md na mesma pasta; imagens de teste não integram dados nem arquivos de produção.

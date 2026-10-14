@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import "./acceptance.css";
+import "./pet-identity.css";
 
 export const metadata: Metadata = {
   title: "Pet Day Care · Gestão integrada",

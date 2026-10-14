@@ -1,3 +1,4 @@
+import {createPet} from './photo-fixtures.mjs';
 import assert from 'node:assert/strict';
 import {handleApi,localDate} from '../lib/business.mjs';
 import {LocalDB,LocalBucket} from './adapter.mjs';
@@ -14,7 +15,7 @@ export async function fixture() {
  await ok(env,'setup',{name:'Empresa de teste local',user_name:'Responsável de teste',technical_password:'Test-tech-access-2026'});
  await ok(env,'settings',{capacities:{daycare:3,boarding:3,grooming:3,extra:0},alert_days:15,require_health:false,required_vaccines:[],boarding_duration:'planned',payment_methods:['PIX','Dinheiro'],backup_retention_days:30});
  const tutor=await ok(env,'records/tutors',{name:'Tutora de teste',phone:'11999990101',email:'acceptance-tutor@example.test'});
- const pet=await ok(env,'records/pets',{name:'Luna',tutor_id:tutor.id,species:'Cão',size:'Pequeno'});
+ const pet=await createPet(env,owner,{name:'Luna',tutor_id:tutor.id,species:'Cão',size:'Pequeno'});
  const service=await ok(env,'records/services',{name:'Banho',kind:'grooming',price_cents:8000,duration_minutes:60,capacity:3,active:true});
  const extra=await ok(env,'records/services',{name:'Unhas',kind:'extra',price_cents:1000,duration_minutes:15,capacity:3,active:true});
  const staff=env.DB.sqlite.prepare('SELECT * FROM users').get();

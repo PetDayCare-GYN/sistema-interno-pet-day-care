@@ -1,0 +1,90 @@
+# AJUSTE OBRIGATÓRIO — IDENTIFICAÇÃO VISUAL DOS PETS EM TODO O SISTEMA
+
+Quero ajustar a forma como o sistema cadastra, identifica e exibe os pets. A fotografia do animal deve ser um elemento obrigatório de identificação visual em todas as funcionalidades em que um pet possa ser selecionado, consultado, agendado ou atendido.
+
+## 1. Cadastro do pet
+
+No formulário de cadastro e edição do pet, incluir um campo para **enviar a foto do animal**, com as seguintes características:
+
+- Permitir upload de imagens nos formatos PNG e JPEG/JPG.
+- Exibir uma prévia da imagem antes de salvar.
+- Permitir substituir ou atualizar a foto posteriormente.
+- Permitir remover a foto somente mediante confirmação.
+- Validar o formato e o tamanho do arquivo.
+- Armazenar a imagem vinculada ao cadastro único do pet, para que ela seja reutilizada em todo o sistema.
+- Exibir uma mensagem clara caso a foto seja obrigatória e ainda não tenha sido cadastrada.
+
+A foto deve ficar em destaque no cadastro, junto ao nome do pet e às principais informações de identificação.
+
+## 2. Foto obrigatória nas funcionalidades
+
+A fotografia deve ser exibida automaticamente sempre que o sistema apresentar um pet, sem necessidade de fazer um novo upload em cada módulo.
+
+Isso inclui, obrigatoriamente:
+
+- **Agendamentos:** banho e tosa, creche/day use, hospedagem e demais serviços.
+- **Seleção de pets:** ao pesquisar, escolher ou vincular um animal a um agendamento.
+- **Agenda diária, semanal e mensal:** quando houver espaço disponível para identificar visualmente o pet.
+- **Check-in e check-out:** entrada e saída da creche, hospedagem e serviços de banho e tosa.
+- **Lista de pets aguardando atendimento.**
+- **Ficha individual e histórico do pet.**
+- **Controle de vacinas, vermifugação e demais informações de saúde.**
+- **Pacotes, créditos e serviços contratados.**
+- **Registros de atendimento, observações e atividades.**
+- **Consultas, pesquisas, relatórios e demais telas que apresentem animais.**
+
+## 3. Seleção segura de animais com nomes iguais
+
+O sistema deve permitir que existam pets diferentes com o mesmo nome, sem gerar confusão ou vincular informações ao animal errado.
+
+Ao pesquisar ou selecionar um pet, exibir um cartão ou linha visual contendo, no mínimo:
+
+- Foto do animal.
+- Nome do pet.
+- Nome do tutor responsável.
+- Raça, quando cadastrada.
+- Porte do animal.
+- Identificador único do cadastro.
+
+A fotografia deve ter tamanho suficiente para permitir o reconhecimento visual do animal. Não utilizar apenas o nome como critério de identificação.
+
+Se houver dois ou mais pets com o mesmo nome, o sistema deverá exibir todos separadamente, cada um com sua foto e seus dados correspondentes, permitindo que o usuário confirme o animal correto antes de concluir o agendamento.
+
+## 4. Integridade dos dados
+
+A imagem deve estar vinculada ao registro único do pet no banco de dados. Todos os módulos devem consultar esse mesmo registro, sem criar cópias independentes do cadastro ou armazenar fotos separadas para cada serviço.
+
+Quando a foto for atualizada no cadastro principal, a nova imagem deverá aparecer automaticamente em todas as funcionalidades do sistema.
+
+O vínculo de agendamentos, serviços, pagamentos, pacotes e histórico deverá ser feito pelo identificador único do pet, e não apenas pelo nome.
+
+## 5. Regras de interface e usabilidade
+
+- Exibir a foto em formato de miniatura nas listas e em tamanho maior nas fichas e telas de confirmação.
+- Manter proporção adequada, sem distorcer a imagem.
+- Utilizar uma imagem neutra de identificação somente enquanto o cadastro estiver incompleto; não apresentar essa imagem como se fosse a foto real do animal.
+- Destacar a foto e o nome do pet na tela de confirmação de um agendamento.
+- Antes de salvar ou confirmar um atendimento, permitir conferir visualmente o pet selecionado.
+- Manter a experiência consistente tanto em computadores quanto em dispositivos móveis.
+
+## 6. Ajuste dos cadastros já existentes
+
+Verificar os pets que já estão cadastrados no sistema e disponibilizar o campo de fotografia também para eles, sem duplicar registros nem perder o histórico de serviços.
+
+Caso existam pets sem foto, identificá-los como pendentes de atualização cadastral e permitir incluir a imagem posteriormente.
+
+## 7. Critérios obrigatórios de validação
+
+Considerar o ajuste concluído somente quando os seguintes testes forem aprovados:
+
+1. Cadastrar dois pets com o mesmo nome e fotografias diferentes.
+2. Pesquisar os dois animais e confirmar que aparecem como registros distintos.
+3. Agendar banho e tosa para um deles e verificar se a foto correta aparece.
+4. Agendar creche/day use e hospedagem e verificar se a identificação visual permanece correta.
+5. Confirmar que a foto aparece nos check-ins, check-outs e históricos.
+6. Atualizar a fotografia no cadastro principal e confirmar que a alteração aparece nos demais módulos.
+7. Editar um pet já existente e incluir sua fotografia sem perder os dados anteriores.
+8. Tentar cadastrar uma imagem em formato não permitido e verificar se o sistema bloqueia o arquivo com uma mensagem clara.
+9. Confirmar que todos os serviços continuam vinculados ao pet correto, mesmo quando existem nomes iguais.
+
+**Importante:** não quero que a fotografia seja tratada como um detalhe estético ou uma melhoria opcional. Ela faz parte da identificação operacional do animal e deve ser considerada em toda a arquitetura do sistema. Analise o que já foi implementado, aproveite os componentes e os cadastros existentes e faça os ajustes necessários sem reconstruir desnecessariamente as funcionalidades que já estão funcionando.

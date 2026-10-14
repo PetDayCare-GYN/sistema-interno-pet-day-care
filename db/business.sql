@@ -164,3 +164,16 @@ END;
 CREATE TRIGGER maintenance_write_guard BEFORE INSERT ON request_keys BEGIN
  SELECT CASE WHEN EXISTS(SELECT 1 FROM maintenance_locks WHERE expires_at>strftime('%Y-%m-%dT%H:%M:%fZ','now')) THEN RAISE(ABORT,'Há uma operação técnica em andamento. Aguarde sua conclusão') END;
 END;
+
+--> statement-breakpoint
+CREATE TRIGGER pet_photo_owner_update BEFORE UPDATE OF photo_id ON pets WHEN NEW.photo_id IS NOT NULL BEGIN
+ SELECT CASE WHEN NOT EXISTS(SELECT 1 FROM files WHERE id=NEW.photo_id AND pet_id=NEW.id AND kind='photo' AND removed_at IS NULL AND mime IN ('image/png','image/jpeg')) THEN RAISE(ABORT,'A fotografia deve pertencer ao cadastro deste pet') END;
+END;
+--> statement-breakpoint
+CREATE TRIGGER appointment_photo_insert BEFORE INSERT ON appointments BEGIN
+ SELECT CASE WHEN NOT EXISTS(SELECT 1 FROM pets p JOIN files f ON f.id=p.photo_id WHERE p.id=NEW.pet_id AND f.pet_id=p.id AND f.kind='photo' AND f.removed_at IS NULL AND f.mime IN ('image/png','image/jpeg')) THEN RAISE(ABORT,'Foto obrigatória pendente no cadastro do pet') END;
+END;
+--> statement-breakpoint
+CREATE TRIGGER appointment_photo_transition BEFORE UPDATE OF status ON appointments WHEN NEW.status IN ('confirmed','in_progress','completed') AND NEW.status!=OLD.status BEGIN
+ SELECT CASE WHEN NOT EXISTS(SELECT 1 FROM pets p JOIN files f ON f.id=p.photo_id WHERE p.id=NEW.pet_id AND f.pet_id=p.id AND f.kind='photo' AND f.removed_at IS NULL AND f.mime IN ('image/png','image/jpeg')) THEN RAISE(ABORT,'Foto obrigatória pendente no cadastro do pet') END;
+END;
