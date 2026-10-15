@@ -23,6 +23,8 @@ const localBindingConfig = {
   main: "./build/sites-worker.ts",
   compatibility_date: "2026-05-15",
   compatibility_flags: ["nodejs_compat"],
+  // Backup automático diário às 06:00 UTC (03:00 America/Sao_Paulo).
+  triggers: { crons: ["0 6 * * *"] },
   d1_databases: d1
     ? [
         {
