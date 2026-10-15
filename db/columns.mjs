@@ -380,6 +380,7 @@ export const tableColumns = {
     "supplier_id",
     "name",
     "brand",
+    "target",
     "sku",
     "barcode",
     "unit",
