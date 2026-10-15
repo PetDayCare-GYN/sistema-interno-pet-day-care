@@ -19,6 +19,7 @@ const isCodexSeatbeltSandbox = process.env.CODEX_SANDBOX === "seatbelt";
 const managedLinux = readExecutionProfile() === "managed-linux";
 
 const localBindingConfig = {
+  name: "pet-day-care",
   main: "./build/sites-worker.ts",
   compatibility_date: "2026-05-15",
   compatibility_flags: ["nodejs_compat"],
