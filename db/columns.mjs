@@ -489,6 +489,8 @@ export const tableColumns = {
     "bonus_target",
     "identity_id",
     "email",
+    "username",
+    "must_change_password",
     "password_hash",
     "name",
     "role",
