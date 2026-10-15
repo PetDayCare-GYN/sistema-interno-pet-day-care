@@ -49,7 +49,8 @@ export const tableColumns = {
     "instructions",
     "notes",
     "actor_id",
-    "created_at"
+    "created_at",
+    "recurrence_id"
   ],
   "attempts": [
     "id",
