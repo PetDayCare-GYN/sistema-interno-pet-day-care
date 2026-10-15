@@ -358,6 +358,7 @@ export const tableColumns = {
     "emergency",
     "notes",
     "photo_id",
+    "photo_focus",
     "archived",
     "created_at"
   ],
