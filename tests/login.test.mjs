@@ -53,6 +53,32 @@ test('sem cookie, o middleware descarta a identidade enviada pelo cliente', asyn
  assert.equal(authed.headers.get('oai-authenticated-user-email'),null);
 });
 
+test('sessão é renovada ao usar (janela de inatividade deslizante)', async () => {
+ const env=await setupOrg();
+ const login=await handleApi(json('login',{email:'dona@pet.test',password:'senha-forte-123'}),env);
+ const token=(login.headers.get('set-cookie')||'').match(/pet_session=([^;]+)/)[1];
+ // Simula 6 dias de inatividade: restam ~1 dia para expirar.
+ const soon=new Date(Date.now()+86400000).toISOString();
+ env.DB.sqlite.prepare('UPDATE sessions SET expires_at=?').run(soon);
+ const req=new Request('https://pet.example/api/state',{headers:{cookie:'pet_session='+token}});
+ const authed=await authenticate(req,env);
+ assert.equal(authed.headers.get('oai-authenticated-user-email'),'dona@pet.test');
+ const after=env.DB.sqlite.prepare('SELECT expires_at FROM sessions LIMIT 1').get().expires_at;
+ // A requisição empurrou a expiração de volta para ~7 dias à frente.
+ assert.ok(new Date(after).getTime()-Date.now()>6*86400000,'expires_at deveria ter sido renovado para ~7 dias');
+});
+
+test('sessão expira após 7 dias sem uso (cookie deixa de resolver)', async () => {
+ const env=await setupOrg();
+ const login=await handleApi(json('login',{email:'dona@pet.test',password:'senha-forte-123'}),env);
+ const token=(login.headers.get('set-cookie')||'').match(/pet_session=([^;]+)/)[1];
+ // Simula inatividade além da janela: expiração no passado.
+ env.DB.sqlite.prepare('UPDATE sessions SET expires_at=?').run(new Date(Date.now()-1000).toISOString());
+ const req=new Request('https://pet.example/api/state',{headers:{cookie:'pet_session='+token}});
+ const authed=await authenticate(req,env);
+ assert.equal(authed.headers.get('oai-authenticated-user-email'),null);
+});
+
 test('logout remove a sessão (cookie deixa de resolver)', async () => {
  const env=await setupOrg();
  const login=await handleApi(json('login',{email:'dona@pet.test',password:'senha-forte-123'}),env);
