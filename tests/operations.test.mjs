@@ -57,6 +57,18 @@ test('Devolução integral cancela o saldo, devolve estoque e gera reembolso pen
  assert.equal(sql.prepare("SELECT amount_cents FROM invoices WHERE source_type='return_sale'").get().amount_cents,1000);
  assert.equal(sql.prepare('SELECT SUM(amount_cents) n FROM payments').get().n,1000);assert.equal(sql.prepare('SELECT COUNT(*) n FROM order_returns').get().n,1);f.env.DB.close();
 });
+test('Venda registra até duas formas de pagamento e recusa excesso ou soma acima do total',async()=>{
+ const f=await fixture();await purchase(f,5);
+ const a=await sale(f,2,{payments:[{method:'Dinheiro',amount_cents:2000},{method:'PIX',amount_cents:3000}]});
+ const sql=f.env.DB.sqlite;
+ assert.equal(sql.prepare('SELECT amount_cents FROM invoices WHERE id=?').get(a.id).amount_cents,5000);
+ assert.equal(sql.prepare('SELECT COUNT(*) n FROM payments WHERE invoice_id=?').get(a.id).n,2);
+ assert.equal(sql.prepare('SELECT COALESCE(SUM(amount_cents),0) n FROM payments WHERE invoice_id=?').get(a.id).n,5000);
+ assert.equal((await call(f.env,'orders',{kind:'sale',tutor_id:f.tutor.id,pet_id:f.pet.id,items:[{product_id:f.product.id,quantity:1}],payments:[{method:'Dinheiro',amount_cents:1000},{method:'PIX',amount_cents:1000},{method:'Débito',amount_cents:500}]})).status,400);
+ assert.equal((await call(f.env,'orders',{kind:'sale',tutor_id:f.tutor.id,pet_id:f.pet.id,items:[{product_id:f.product.id,quantity:1}],payments:[{method:'Dinheiro',amount_cents:9999}]})).status,400);
+ assert.equal((await call(f.env,'orders',{kind:'sale',tutor_id:f.tutor.id,pet_id:f.pet.id,items:[{product_id:f.product.id,quantity:1}],payments:[{method:'Cheque',amount_cents:100}]})).status,400);
+ assert.equal(sql.prepare('SELECT COUNT(*) n FROM orders').get().n,2);f.env.DB.close();
+});
 test('Devolver uma compra já consumida falha sem alterar estoque nem financeiro',async()=>{
  const f=await fixture(),p=await purchase(f,1);await sale(f,1);
  assert.equal((await call(f.env,'order-returns/'+p.id,{reason:'Devolução ao fornecedor',confirmation:'ESTORNAR'})).status,409);

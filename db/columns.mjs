@@ -355,6 +355,7 @@ export const tableColumns = {
     "allergies",
     "diet",
     "medication",
+    "neutered",
     "emergency",
     "notes",
     "photo_id",
