@@ -3,6 +3,9 @@ export const columnDefaults = {
   "activities": {
     "created_at": "(strftime('%Y-%m-%dT%H:%M:%fZ','now'))"
   },
+  "adaptations": {
+    "created_at": "(strftime('%Y-%m-%dT%H:%M:%fZ','now'))"
+  },
   "alert_states": {
     "created_at": "(strftime('%Y-%m-%dT%H:%M:%fZ','now'))"
   },
@@ -66,6 +69,12 @@ export const columnDefaults = {
     "created_at": "(strftime('%Y-%m-%dT%H:%M:%fZ','now'))"
   },
   "health": {
+    "created_at": "(strftime('%Y-%m-%dT%H:%M:%fZ','now'))"
+  },
+  "health_catalog": {
+    "required": 0,
+    "recommended": 0,
+    "active": 1,
     "created_at": "(strftime('%Y-%m-%dT%H:%M:%fZ','now'))"
   },
   "infrastructure": {
@@ -154,6 +163,10 @@ export const columnDefaults = {
     "created_at": "(strftime('%Y-%m-%dT%H:%M:%fZ','now'))"
   },
   "tasks": {
+    "created_at": "(strftime('%Y-%m-%dT%H:%M:%fZ','now'))"
+  },
+  "turmas": {
+    "active": 1,
     "created_at": "(strftime('%Y-%m-%dT%H:%M:%fZ','now'))"
   },
   "tutors": {

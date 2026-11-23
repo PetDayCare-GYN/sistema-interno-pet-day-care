@@ -6,6 +6,15 @@ export const tableColumns = {
     "appointment_id",
     "kind",
     "notes",
+    "value",
+    "actor_id",
+    "created_at"
+  ],
+  "adaptations": [
+    "id",
+    "pet_id",
+    "result",
+    "notes",
     "actor_id",
     "created_at"
   ],
@@ -48,6 +57,7 @@ export const tableColumns = {
     "belongings",
     "instructions",
     "notes",
+    "turma_id",
     "actor_id",
     "created_at",
     "recurrence_id"
@@ -188,13 +198,33 @@ export const tableColumns = {
     "kind",
     "created_at"
   ],
+  "health_catalog": [
+    "id",
+    "name",
+    "kind",
+    "species",
+    "interval_days",
+    "puppy_doses",
+    "puppy_interval_days",
+    "required",
+    "recommended",
+    "active",
+    "notes",
+    "created_at"
+  ],
   "health": [
     "id",
     "pet_id",
+    "catalog_id",
     "kind",
     "name",
     "applied_date",
     "due_date",
+    "dose_number",
+    "manufacturer",
+    "lot",
+    "vet_name",
+    "crmv",
     "proof_status",
     "notes",
     "created_at"
@@ -356,6 +386,8 @@ export const tableColumns = {
     "diet",
     "medication",
     "neutered",
+    "sex",
+    "behavior_tags",
     "emergency",
     "notes",
     "photo_id",
@@ -464,6 +496,16 @@ export const tableColumns = {
     "user_id",
     "priority",
     "status",
+    "notes",
+    "created_at"
+  ],
+  "turmas": [
+    "id",
+    "name",
+    "size",
+    "temperament",
+    "capacity",
+    "active",
     "notes",
     "created_at"
   ],
